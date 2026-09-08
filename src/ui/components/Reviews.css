@@ -1,0 +1,90 @@
+/* ==========================================
+   КАРТОЧКА ОТЗЫВА В КАРУСЕЛИ
+   ========================================== */
+.review-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    margin-top: 8px;
+    flex: 0 0 calc(50% - 12px);
+    min-width: 0;
+}
+
+.review-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-hover);
+}
+
+/* === КАТЕГОРИЯ (как у статей) === */
+.review-category-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #121212;
+    border-radius: 0 0 12px 0;
+    background: var(--color-accent);
+}
+
+/* === ТЕЛО КАРТОЧКИ === */
+.review-card-body {
+    padding: 16px 20px 20px;
+}
+
+.review-card-body .review-stars {
+    color: var(--color-accent);
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+/* ==========================================
+   ОБРЕЗАНИЕ ТЕКСТА ОТЗЫВОВ
+   ========================================== */
+.review-card-body p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    max-height: 4.5em;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+.review-card-body cite {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.review-card-body .review-date {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    margin-top: 6px;
+}
+
+/* === КАРУСЕЛЬ ОТЗЫВОВ === */
+.reviews-carousel .review-card {
+    flex: 0 0 calc(50% - 12px);
+    min-width: 0;
+    margin: 8px 0;
+}
+
+@media (max-width: 768px) {
+    .reviews-carousel .review-card {
+        flex: 0 0 100%;
+    }
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Арина Николаева · Психолог по отношениям</title>
+    <meta name="description" content="Психолог по отношениям. Помогаю парам и индивидуально найти гармонию, выстроить доверие и понять себя." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- FAVICON -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+</head>
+<body>
+
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ СТАТЕЙ -->
+    <div class="modal-overlay" id="articleModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-image">
+                <img src="" alt="Обложка статьи" id="modalImage" />
+            </div>
+            <div class="modal-body">
+                <span class="modal-category" id="modalCategory"></span>
+                <h2 id="modalTitle"></h2>
+                <div class="modal-meta" id="modalMeta"></div>
+                <div class="modal-text" id="modalText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ОТЗЫВОВ -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-content modal-review">
+            <button class="modal-close" id="reviewModalClose">✕</button>
+            <div class="modal-body">
+                <!-- ИМЯ сверху (крупно) -->
+                <div class="modal-review-name" id="reviewModalName"></div>
+                <div class="modal-stars" id="reviewModalStars"></div>
+                <p class="modal-review-text" id="reviewModalText"></p>
+                <!-- Дата -->
+                <div class="modal-review-date" id="reviewModalDate"></div>
+                <!-- ДЕТАЛЬНАЯ ОЦЕНКА -->
+                <div class="modal-details" id="reviewModalDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ВХОДА АДМИНА -->
+    <div class="modal-overlay auth-modal" id="authModal">
+        <div class="modal-content">
+            <button class="modal-close" id="authModalClose">✕</button>
+            <div class="modal-body">
+                <h2 class="auth-title">Вход для администратора</h2>
+                <p class="auth-subtitle">Введите данные для доступа к панели управления</p>
+
+                <form class="auth-form" id="authForm">
+                    <div class="form-group">
+                        <label for="authEmail">Email</label>
+                        <input type="email" id="authEmail" placeholder="admin@psychologist.ru" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="authPassword">Пароль</label>
+                        <input type="password" id="authPassword" placeholder="••••••••" required />
+                    </div>
+                    <button type="submit" class="auth-submit-btn">Войти</button>
+                    <div class="auth-error" id="authError"></div>
+                </form>
+
+                <div class="auth-demo-hint">
+                    🔑 <strong>Демо-данные:</strong> admin@psychologist.ru / admin123
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- КНОПКА "НАВЕРХ" -->
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Наверх">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5" />
+            <path d="M5 12l7-7 7 7" />
+        </svg>
+    </button>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
