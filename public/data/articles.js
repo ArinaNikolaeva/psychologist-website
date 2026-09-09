@@ -11,7 +11,7 @@ export const articlesData = [
         category: articleCategories[4], // 'Веб-разработка'
         date: '10.09.2026',
         readingTime: '5 мин чтения',
-        image: 'images/article-1.jpg',
+        image: '/images/article-1.jpg',
         preview: 'Сайт-визитка — это лицо вашего бизнеса. Рассказываю, как сделать её эффективной и не переплатить.',
         content: `
             <p><strong>Сайт-визитка — это первое, что видит ваш клиент.</strong> Он должен быть быстрым, красивым и полезным.</p>
@@ -33,7 +33,7 @@ export const articlesData = [
         category: articleCategories[1], // 'Веб-разработка'
         date: '05.09.2026',
         readingTime: '7 мин чтения',
-        image: 'images/article-2.jpg',
+        image: '/images/article-2.jpg',
         preview: 'Разбираем различия, плюсы и минусы. Помогаю выбрать подходящий формат для вашего бизнеса.',
         content: `
             <p><strong>Лендинг или многостраничный сайт?</strong> Этот вопрос я слышу почти от каждого клиента.</p>
@@ -59,7 +59,7 @@ export const articlesData = [
         category: articleCategories[2], // 'Веб-разработка'
         date: '28.08.2026',
         readingTime: '6 мин чтения',
-        image: 'images/article-3.jpg',
+        image: '/images/article-3.jpg',
         preview: 'Дизайн — это не про красоту, а про удобство. Простые правила для сайта, который нравится клиентам.',
         content: `
             <p><strong>Дизайн сайта — это не только про картинки.</strong> Это про то, как пользователь взаимодействует с вами.</p>
@@ -80,7 +80,7 @@ export const articlesData = [
         category: articleCategories[3], // 'Веб-разработка'
         date: '20.08.2026',
         readingTime: '4 мин чтения',
-        image: 'images/article-1.jpg',
+        image: '/images/article-1.jpg',
         preview: 'Сайт — это не про "сделал и забыл". Рассказываю, что входит в поддержку и почему она важна.',
         content: `
             <p><strong>Сайт — это живой инструмент.</strong> Он требует внимания, обновлений и заботы.</p>

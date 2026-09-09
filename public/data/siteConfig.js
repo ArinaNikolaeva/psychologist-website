@@ -1,17 +1,10 @@
-// ==========================================
-// ЕДИНЫЙ КОНФИГ САЙТА
-// ==========================================
-
 export const siteConfig = {
-    // === ОСНОВНАЯ ИНФОРМАЦИЯ ===
     site: {
         title: 'Арина Николаева · Веб-разработчик',
         description: 'Квалифицированный веб-разработчик. Помогаю людям реализовать их идеи и помочь бизнесу.',
         year: 2026,
         url: 'https://arinanikolaeva.ru'
     },
-
-    // === ПЕРСОНАЛЬНЫЕ ДАННЫЕ ===
     person: {
         name: 'Арина Николаева',
         firstName: 'Арина',
@@ -26,45 +19,24 @@ export const siteConfig = {
         description: 'Универсальный специалист по разработке сайтов, помогу с нуля создать инструмент для продвижения бизнеса',
         heroDescription: 'Квалифицированный программист. Помогаю людям реализовать их идеи и помочь бизнесу.'
     },
-
-    // === КОНТАКТЫ ===
-     contacts: {
+    contacts: {
         telegram: '@arina_psychologist',
         vk: 'vk.com/arina_psychologist',
         email: 'arina@psychologist.ru'
     },
-
-    // === МЕТА-ТЕГИ ===
     meta: {
         keywords: 'веб-разработчик, сайты, программист, ИРНИТУ',
-        ogImage: 'images/og-image.jpg'
+        ogImage: '/images/og-image.jpg'
     },
-
-    // === ИЗОБРАЖЕНИЯ ===
     images: {
-        heroBg: 'images/hero-bg.jpg',
-        heroPhoto: 'images/hero-photo.jpg',
-        aboutPhoto: 'images/about-photo.jpg',
-        favicon: 'images/favicon.ico'
+        heroBg: '/images/hero-bg.jpg',        // ← добавил /
+        heroPhoto: '/images/hero-photo.jpg',  // ← добавил /
+        aboutPhoto: '/images/about-photo.jpg', // ← добавил /
+        favicon: '/images/favicon.ico'        // ← добавил /
     },
-
-    // === СПИСОК ТЕГОВ / КАТЕГОРИЙ ===
     tags: [
         '✦ ИРНИТУ (политех)',
         '✶ Веб-разработка',
         '✉︎ Сайт-визитка · Полноценный сайт · Сопровождение сайта'
     ]
 };
-
-// === ХЕЛПЕРЫ ДЛЯ КОМПОНЕНТОВ ===
-export function getPersonData() {
-    return siteConfig.person;
-}
-
-export function getContacts() {
-    return siteConfig.contacts;
-}
-
-export function getSiteInfo() {
-    return siteConfig.site;
-}
