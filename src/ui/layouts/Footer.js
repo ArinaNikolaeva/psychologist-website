@@ -2,7 +2,7 @@ export function renderFooter() {
     return `
         <footer class="footer">
             <div class="container footer-inner">
-                <div>© 2026 Арина Николаева · Психолог по отношениям</div>
+                <div>© 2026 Арина Николаева · Веб-разработчик</div>
                 <div>
                     <a href="#" id="footerTelegram">Telegram</a>
                     <a href="#" id="footerVK">ВКонтакте</a>

@@ -1,7 +1,7 @@
 {
     "name": "psychologist-website",
     "version": "1.0.0",
-    "description": "Сайт психолога по отношениям · Арина Николаева",
+    "description": "Сайт веб-программиста · Арина Николаева",
     "type": "module",
     "scripts": {
         "dev": "vite",
