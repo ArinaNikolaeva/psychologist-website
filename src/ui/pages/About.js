@@ -1,24 +1,25 @@
-export function renderAbout(data) {
+// ==========================================
+// ABOUT
+// ==========================================
+
+import { siteConfig } from '/data/siteConfig.js';
+
+export function renderAbout() {
+    const person = siteConfig.person;
+    const images = siteConfig.images;
+
     return `
         <div class="about-grid">
             <div class="about-image animate-on-scroll">
-                <img src="${data.image}" alt="${data.name}" />
+                <img src="${images.aboutPhoto}" alt="${person.name}" />
             </div>
             <div class="about-content animate-on-scroll" style="animation-delay: 0.1s;">
-                <!-- ИМЯ — отдельно -->
-                <h3 data-editable="about.name" style="display: block; width: 100%;">${data.name}</h3>
-                
-                <!-- СПЕЦИАЛИЗАЦИЯ — отдельно -->
-                <p class="about-experience" data-editable="about.experience" style="display: block; width: 100%;">${data.experience}</p>
-
-                
-                <!-- ВТОРОЙ АБЗАЦ — отдельно -->
-                <p data-editable="about.description" style="display: block; width: 100%;">
-                    ${data.description}
-                </p>
-                
+                <h3 data-editable="about.name">${person.name}</h3>
+                <div class="about-experience" data-editable="about.experience">${person.shortProfession}</div>
+                <p data-editable="about.intro"><strong>Привет! Я ${person.name}.</strong> ${person.bio}</p>
+                <p data-editable="about.description">${person.description}</p>
                 <div class="about-meta">
-                    ${data.meta.map(m => `<span>${m}</span>`).join('')}
+                    ${siteConfig.tags.map(tag => `<span>${tag}</span>`).join('')}
                 </div>
             </div>
         </div>

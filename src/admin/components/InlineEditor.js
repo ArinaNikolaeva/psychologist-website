@@ -2,17 +2,20 @@
 // РЕДАКТИРОВАНИЕ — ПРОСТАЯ РАБОЧАЯ ВЕРСИЯ
 // ==========================================
 
+import { siteConfig } from '/data/siteConfig.js';
+
+// ✅ БЕРЁМ ДАННЫЕ ИЗ siteConfig
 const defaultData = {
     about: {
-        name: 'Арина Николаева',
-        experience: 'Веб-разработка · Молодой специалист',
-        intro: 'Мне 22 года, я закончила ИРНИТУ (политех). Моя специализация — информационные системы и технологии.',
-        description: 'Универсальный специалист по разработке сайтов, помогу с нуля создать инструмент для продвижения бизнеса'
+        name: siteConfig.person.name,
+        experience: siteConfig.person.shortProfession,
+        intro: siteConfig.person.bio,
+        description: siteConfig.person.description
     },
     hero: {
-        name: 'Арина Николаева',
-        subtitle: 'Веб-разработка · Молодой специалист',
-        description: 'Квалифицированный программист. Помогаю людям реализовать их идеи и помочь бизнесу.'
+        name: siteConfig.person.name,
+        subtitle: siteConfig.person.shortProfession,
+        description: siteConfig.person.heroDescription
     }
 };
 
@@ -66,14 +69,14 @@ function addEditOverlays() {
     
     if (aboutContent && !aboutContent.querySelector('.edit-overlay')) {
         aboutContent.style.position = 'relative';
-        const overlay = createOverlay('about', aboutContent); // ← передаем родителя
+        const overlay = createOverlay('about', aboutContent);
         aboutContent.appendChild(overlay);
         console.log('✅ Оверлей для about добавлен');
     }
 
     if (heroText && !heroText.querySelector('.edit-overlay')) {
         heroText.style.position = 'relative';
-        const overlay = createOverlay('hero', heroText); // ← передаем родителя
+        const overlay = createOverlay('hero', heroText);
         heroText.appendChild(overlay);
         console.log('✅ Оверлей для hero добавлен');
     }
@@ -86,7 +89,6 @@ function createOverlay(section, parentElement) {
     overlay.dataset.section = section;
     overlay.dataset.editing = 'false';
     
-    // Стили оверлея
     overlay.style.cssText = `
         position: absolute;
         inset: 0px 0 70px 0;
@@ -102,7 +104,6 @@ function createOverlay(section, parentElement) {
         cursor: pointer;
     `;
     
-    // === МИНИМАЛИСТИЧНАЯ КНОПКА ===
     const btn = document.createElement('button');
     btn.className = 'edit-overlay-btn';
     btn.textContent = '✎ Редактировать';
@@ -123,10 +124,9 @@ function createOverlay(section, parentElement) {
         opacity: 0;
         pointer-events: none;
         transform: scale(0.9);
-        display: block; /* добавлено для явного контроля */
+        display: block;
     `;
     
-    // Ховер эффекты для кнопки
     btn.addEventListener('mouseenter', () => {
         if (overlay.dataset.editing !== 'true') {
             btn.style.transform = 'scale(1.05)';
@@ -152,7 +152,6 @@ function createOverlay(section, parentElement) {
     
     overlay.appendChild(btn);
     
-    // === ЛОГИКА ПРИ НАВЕДЕНИИ НА РОДИТЕЛЬСКИЙ БЛОК ===
     const parent = parentElement || overlay.parentElement;
     console.log('Родитель для оверлея:', parent);
     
@@ -162,13 +161,11 @@ function createOverlay(section, parentElement) {
         parent.addEventListener('mouseenter', () => {
             clearTimeout(hoverTimeout);
             if (overlay.dataset.editing !== 'true') {
-                // Показываем затемнение и размытие
                 overlay.style.background = 'rgba(18, 18, 18, 0.3)';
                 overlay.style.backdropFilter = 'blur(2px)';
                 overlay.style.webkitBackdropFilter = 'blur(2px)';
                 overlay.style.pointerEvents = 'auto';
                 
-                // Показываем кнопку (если она не скрыта)
                 if (btn.style.display !== 'none') {
                     btn.style.opacity = '1';
                     btn.style.pointerEvents = 'auto';
@@ -180,13 +177,11 @@ function createOverlay(section, parentElement) {
         parent.addEventListener('mouseleave', () => {
             hoverTimeout = setTimeout(() => {
                 if (overlay.dataset.editing !== 'true') {
-                    // Убираем затемнение и размытие
                     overlay.style.background = 'transparent';
                     overlay.style.backdropFilter = 'none';
                     overlay.style.webkitBackdropFilter = 'none';
                     overlay.style.pointerEvents = 'none';
                     
-                    // Скрываем кнопку (если она не скрыта)
                     if (btn.style.display !== 'none') {
                         btn.style.opacity = '0';
                         btn.style.pointerEvents = 'none';
@@ -196,14 +191,12 @@ function createOverlay(section, parentElement) {
             }, 100);
         });
         
-        // Если мышь зашла на кнопку — отменяем скрытие
         btn.addEventListener('mouseenter', () => {
             if (overlay.dataset.editing !== 'true') {
                 clearTimeout(hoverTimeout);
             }
         });
         
-        // Клик по оверлею (но не по кнопке) для входа в режим редактирования
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay && overlay.dataset.editing === 'false') {
                 toggleSectionEdit(section, overlay);
@@ -219,7 +212,7 @@ function removeEditOverlays() {
     document.querySelectorAll('.edit-overlay').forEach(overlay => overlay.remove());
     document.querySelectorAll('[data-editable]').forEach(el => {
         el.contentEditable = 'false';
-        el.classList.remove('editing-active'); // ← удаляем класс
+        el.classList.remove('editing-active');
         el.style.outline = 'none';
         el.style.outlineOffset = '0';
         el.style.backgroundColor = 'transparent';
@@ -235,7 +228,6 @@ function toggleSectionEdit(section, overlay) {
     const isEditing = overlay.dataset.editing === 'true';
     
     if (isEditing) {
-        // СОХРАНЯЕМ
         saveSection(section);
         overlay.dataset.editing = 'false';
         overlay.style.background = 'transparent';
@@ -243,7 +235,6 @@ function toggleSectionEdit(section, overlay) {
         overlay.style.webkitBackdropFilter = 'none';
         overlay.style.pointerEvents = 'none';
         
-        // ПОКАЗЫВАЕМ КНОПКУ СНОВА
         const btn = overlay.querySelector('.edit-overlay-btn');
         if (btn) {
             btn.style.display = 'block';
@@ -254,10 +245,9 @@ function toggleSectionEdit(section, overlay) {
         const actions = document.querySelector('.edit-actions');
         if (actions) actions.remove();
         
-        // ✅ Убираем класс editing-active и возвращаем исходное состояние
         document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
             el.contentEditable = 'false';
-            el.classList.remove('editing-active'); // ← ГЛАВНОЕ: удаляем класс
+            el.classList.remove('editing-active');
             el.style.outline = 'none';
             el.style.outlineOffset = '0';
             el.style.backgroundColor = 'transparent';
@@ -268,32 +258,26 @@ function toggleSectionEdit(section, overlay) {
         
         showToast('Изменения сохранены!');
     } else {
-        // ➡️ ЗАКРЫВАЕМ ВСЕ ДРУГИЕ СЕКЦИИ
         closeOtherSections(overlay);
         
-        // ВКЛЮЧАЕМ РЕДАКТИРОВАНИЕ
         overlay.dataset.editing = 'true';
         overlay.style.background = 'transparent';
         overlay.style.backdropFilter = 'none';
         overlay.style.webkitBackdropFilter = 'none';
         overlay.style.pointerEvents = 'none';
         
-        // СКРЫВАЕМ КНОПКУ В ЭТОЙ СЕКЦИИ
         const btn = overlay.querySelector('.edit-overlay-btn');
         if (btn) {
             btn.style.display = 'none';
         }
         
-        // ✅ ДОБАВЛЯЕМ КЛАСС СЕКЦИИ ДЛЯ РАЗДВИГАНИЯ
         const parentSection = overlay.closest('.section');
         if (parentSection) {
             parentSection.classList.add('section-editing');
         }
         
-        // Показываем плавающие кнопки
         showEditActions(section, overlay);
         
-        // Добавляем класс редактирования элементам
         document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
             el.contentEditable = 'true';
             el.classList.add('editing-active');
@@ -319,10 +303,9 @@ function closeOtherSections(currentOverlay) {
                 btn.style.pointerEvents = 'none';
             }
             
-            // ✅ Убираем класс
             document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
                 el.contentEditable = 'false';
-                el.classList.remove('editing-active'); // ← удаляем класс
+                el.classList.remove('editing-active');
                 el.style.outline = 'none';
                 el.style.outlineOffset = '0';
                 el.style.backgroundColor = 'transparent';
@@ -362,7 +345,6 @@ function showEditActions(section, overlay) {
         animation: slideUp 0.3s ease;
     `;
     
-    // Индикатор редактирования (с названием секции)
     const sectionNames = {
         hero: 'Главный блок',
         about: 'Обо мне'
@@ -436,7 +418,6 @@ function showEditActions(section, overlay) {
         overlay.style.webkitBackdropFilter = 'none';
         overlay.style.pointerEvents = 'none';
         
-        // ПОКАЗЫВАЕМ КНОПКУ СНОВА
         const btn = overlay.querySelector('.edit-overlay-btn');
         if (btn) {
             btn.style.display = 'block';
@@ -447,10 +428,9 @@ function showEditActions(section, overlay) {
         actions.remove();
         applyDataToDOM(loadData());
         
-        // ✅ Убираем класс и инлайн-стили
         document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
             el.contentEditable = 'false';
-            el.classList.remove('editing-active'); // ← ГЛАВНОЕ: удаляем класс
+            el.classList.remove('editing-active');
             el.style.outline = 'none';
             el.style.outlineOffset = '0';
             el.style.backgroundColor = 'transparent';
@@ -501,7 +481,7 @@ function showToast(message) {
         bottom: 100px;
         left: 50%;
         transform: translateX(-50%);
-        background: #34ff342a;
+        background: rgba(45, 107, 79, 0.9);
         color: white;
         padding: 14px 32px;
         border-radius: 12px;

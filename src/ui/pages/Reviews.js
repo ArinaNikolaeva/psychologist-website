@@ -3,15 +3,8 @@
 // ==========================================
 
 import { reviewsData } from '../../../public/data/reviews.js';
+import { categoryMap } from '../../../public/data/categories.js';
 import { renderReviewForm, initReviewForm } from '../components/ReviewForm.js';
-
-const categoryMap = {
-    'отношения': { color: '#D48B6A', label: 'Отношения' },
-    'самооценка': { color: '#6A9C89', label: 'Самооценка' },
-    'кризис': { color: '#C47A7A', label: 'Кризис' },
-    'эмоции': { color: '#B8A08A', label: 'Эмоции' },
-    'коммуникация': { color: '#7A9BA8', label: 'Коммуникация' }
-};
 
 export function renderReviews() {
     return `
@@ -46,7 +39,6 @@ export function renderReviews() {
 export function initReviews() {
     initReviewForm();
     
-    // === ОТКРЫТИЕ ПОЛНОГО ОТЗЫВА ПО КЛИКУ ===
     document.addEventListener('click', (e) => {
         const card = e.target.closest('.review-card');
         if (card) {
@@ -64,16 +56,13 @@ export function initReviews() {
     };
 }
 
-// === ОТКРЫТЬ МОДАЛКУ С ПОЛНЫМ ОТЗЫВОМ ===
 function openFullReview(review) {
     if (document.querySelector('.full-review-modal')) return;
 
     const category = categoryMap[review.category] || { color: '#888', label: review.category };
     
-    // Звёзды
     const starsHtml = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
     
-    // Критерии (если есть)
     let criteriaHtml = '';
     if (review.criteria) {
         const criteriaLabels = {
@@ -121,7 +110,6 @@ function openFullReview(review) {
 
     document.body.appendChild(modal);
 
-    // === ЗАКРЫТИЕ ===
     const closeBtn = modal.querySelector('#fullReviewClose');
     closeBtn.addEventListener('click', () => modal.remove());
     

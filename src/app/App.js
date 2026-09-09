@@ -1,3 +1,7 @@
+// ==========================================
+// ГЛАВНЫЙ ФАЙЛ ПРИЛОЖЕНИЯ
+// ==========================================
+
 import { renderHeader } from '../ui/layouts/Header.js';
 import { renderFooter } from '../ui/layouts/Footer.js';
 import { initHeader } from '../ui/layouts/Header.js';
@@ -11,29 +15,12 @@ import { initCarousel } from '../ui/components/Carousel.js';
 import { initModals } from '../ui/components/Modal.js';
 import { initFAQ } from '../ui/components/FAQ.js';
 
-// ИМПОРТЫ ИЗ ПАПКИ ADMIN (ОДИН РАЗ)
 import { initAuthModal, updateHeaderButtons } from '../admin/components/AuthModal.js';
 import { initInlineEditor } from '../admin/components/InlineEditor.js';
 import { initAdminPanel } from '../admin/components/AdminPanel.js';
 
 import { initHome } from '../ui/pages/Home.js';
-
-const heroData = {
-    name: 'Арина Николаева',
-    subtitle: 'Веб-разработчик · Различные сайты',
-    description: 'Квалифицированный программист. Помогаю людям реализовать их идеи и помочь бизнесу.',
-    bgImage: 'images/hero-bg.jpg',
-    photo: 'images/hero-photo.jpg'
-};
-
-const aboutData = {
-    name: 'Арина Николаева',
-    experience: 'Веб-разработка · Молодой специалист',
-    intro: 'Мне 22 года, я закончила ИРНИТУ (политех). Моя специализация — информационные системы и технологии.',
-    description: 'Универсальный специалист по разработке сайтов, помогу с нуля создать инструмент для продвижения бизнеса',
-    image: 'images/about-photo.jpg',
-    meta: ['✦ ИРНИТУ (политех)', '✶ Веб-разработка', '✉︎ Сайт-визитка · Полноценный сайт · Сопровождение сайта']
-};
+import { siteConfig } from '/data/siteConfig.js';
 
 export function initApp() {
     // Рендерим хедер и футер
@@ -46,12 +33,12 @@ export function initApp() {
 
     // Рендерим все секции
     main.innerHTML = `
-        ${renderHero(heroData)}
+        ${renderHero()}
 
         <section class="section section-about" id="about">
             <div class="container">
                 <h2 class="section-title animate-on-scroll">Об авторе</h2>
-                ${renderAbout(aboutData)}
+                ${renderAbout()}
             </div>
         </section>
 
@@ -95,36 +82,34 @@ export function initApp() {
         </section>
     `;
 
+    // ИНИЦИАЛИЗАЦИЯ
     // ИНИЦИАЛИЗАЦИЯ КАРУСЕЛЕЙ
     initCarousel('carouselTrack', 'carouselPrev', 'carouselNext', 'carouselDots');
     initCarousel('reviewsTrack', 'reviewsPrev', 'reviewsNext', 'reviewsDots');
-
-    // ИНИЦИАЛИЗАЦИЯ МОДАЛОК
     initModals();
-
-    // ИНИЦИАЛИЗАЦИЯ FAQ
     initFAQ();
-
-    // ИНИЦИАЛИЗАЦИЯ АДМИН-МОДУЛЕЙ (ОДИН РАЗ)
     initAuthModal();
     updateHeaderButtons();
     initInlineEditor();
     initAdminPanel();
-
     initHome();
-    // КОНТАКТЫ
-    document.getElementById('contactTelegram')?.addEventListener('click', () => {
-        alert('Telegram: @arina_psychologist');
-    });
-    document.getElementById('contactVK')?.addEventListener('click', () => {
-        alert('ВКонтакте: vk.com/arina_psychologist');
-    });
-    document.getElementById('contactEmail')?.addEventListener('click', () => {
-        alert('Email: arina@psychologist.ru');
-    });
-
     initHeader();
     initFooter();
+
+    // КОНТАКТЫ
+    const contacts = siteConfig.contacts;
+    document.getElementById('contactTelegram')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert(`Telegram: ${contacts.telegram}`);
+    });
+    document.getElementById('contactVK')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert(`ВКонтакте: ${contacts.vk}`);
+    });
+    document.getElementById('contactEmail')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert(`Email: ${contacts.email}`);
+    });
 
     // КНОПКА "НАВЕРХ"
     const scrollBtn = document.getElementById('scrollTopBtn');

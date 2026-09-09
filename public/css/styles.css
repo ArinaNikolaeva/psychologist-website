@@ -19,6 +19,7 @@
 @import '../../src/ui/pages/Hero.css';
 @import '../../src/ui/pages/About.css';
 @import '../../src/ui/pages/FAQ.css';
+@import '../../src/ui/pages/Articles.css';  /* ← ДОБАВИТЬ ЭТУ СТРОКУ */
 
 /* ==========================================
    LAYOUT

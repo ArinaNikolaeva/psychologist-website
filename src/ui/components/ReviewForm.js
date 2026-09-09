@@ -3,14 +3,7 @@
 // ==========================================
 
 import { addReview } from '../../../public/data/reviews.js';
-
-const categories = [
-    { value: 'отношения', label: 'Отношения' },
-    { value: 'самооценка', label: 'Самооценка' },
-    { value: 'кризис', label: 'Кризис' },
-    { value: 'эмоции', label: 'Эмоции' },
-    { value: 'коммуникация', label: 'Коммуникация' }
-];
+import { reviewCategories } from '../../../public/data/categories.js';
 
 // ✅ КРИТЕРИИ ДЛЯ ОЦЕНКИ (как в развёрнутых отзывах)
 const ratingCriteria = [
@@ -59,13 +52,13 @@ function openReviewModal() {
                     <div class="form-group">
                         <label for="reviewCategory">Тема отзыва</label>
                         <select id="reviewCategory">
-                            ${categories.map(cat => 
+                            ${reviewCategories.map(cat => 
                                 `<option value="${cat.value}">${cat.label}</option>`
                             ).join('')}
                         </select>
                     </div>
                     
-                    <!-- ✅ РАЗДЕЛЬНЫЕ ОЦЕНКИ ПО КРИТЕРИЯМ -->
+                    <!-- РАЗДЕЛЬНЫЕ ОЦЕНКИ ПО КРИТЕРИЯМ -->
                     <div class="form-group">
                         <label>Оцените работу по критериям</label>
                         <div class="rating-criteria">
@@ -83,7 +76,7 @@ function openReviewModal() {
                         </div>
                     </div>
                     
-                    <!-- ✅ ОБЩАЯ ОЦЕНКА (средняя) -->
+                    <!-- ОБЩАЯ ОЦЕНКА (средняя) -->
                     <div class="form-group">
                         <label>Общая оценка</label>
                         <div class="rating-stars" id="ratingStars">
@@ -125,11 +118,9 @@ function setupModalHandlers(modal) {
 
     // === ЗВЁЗДЫ ДЛЯ КРИТЕРИЕВ ===
     const criteriaContainers = modal.querySelectorAll('.criterion-stars');
-    const ratingInputs = modal.querySelectorAll('.criterion-rating');
     const totalInput = modal.querySelector('#reviewRating');
     const averageDisplay = modal.querySelector('#ratingAverage');
 
-    // Храним оценки по критериям
     const criterionRatings = {};
     ratingCriteria.forEach(c => {
         criterionRatings[c.id] = 5;
@@ -140,7 +131,6 @@ function setupModalHandlers(modal) {
         const stars = container.querySelectorAll('.star');
         let selectedRating = 5;
 
-        // Инициализация
         highlightStars(stars, 5);
 
         stars.forEach(star => {
@@ -156,7 +146,6 @@ function setupModalHandlers(modal) {
                 selectedRating = parseInt(star.dataset.value);
                 criterionRatings[criterionId] = selectedRating;
                 
-                // Обновляем скрытое поле
                 const input = container.parentElement.querySelector('.criterion-rating');
                 if (input) input.value = selectedRating;
                 
@@ -166,7 +155,6 @@ function setupModalHandlers(modal) {
         });
     });
 
-    // === ФУНКЦИЯ ПОДСЧЁТА СРЕДНЕЙ ОЦЕНКИ ===
     function updateAverageRating() {
         const values = Object.values(criterionRatings);
         const sum = values.reduce((a, b) => a + b, 0);
@@ -176,17 +164,15 @@ function setupModalHandlers(modal) {
         totalInput.value = Math.round(avg);
         averageDisplay.textContent = `Средняя: ${rounded.toFixed(1)}`;
         
-        // Обновляем общие звёзды
         const mainStars = modal.querySelector('#ratingStars').querySelectorAll('.star');
         highlightStars(mainStars, Math.round(avg));
     }
 
-    // === ОБЩИЕ ЗВЁЗДЫ (для удобства) ===
+    // === ОБЩИЕ ЗВЁЗДЫ ===
     const mainStars = modal.querySelector('#ratingStars').querySelectorAll('.star');
     mainStars.forEach(star => {
         star.addEventListener('click', () => {
             const value = parseInt(star.dataset.value);
-            // Устанавливаем всем критериям одинаковую оценку
             ratingCriteria.forEach(c => {
                 criterionRatings[c.id] = value;
                 const container = modal.querySelector(`.criterion-stars[data-criterion="${c.id}"]`);
@@ -211,7 +197,6 @@ function setupModalHandlers(modal) {
         const text = document.getElementById('reviewText').value.trim();
         const rating = parseInt(totalInput.value) || 5;
 
-        // Собираем оценки по критериям
         const criteriaRatings = {};
         ratingCriteria.forEach(c => {
             const input = modal.querySelector(`.criterion-rating[data-criterion="${c.id}"]`);
@@ -228,14 +213,7 @@ function setupModalHandlers(modal) {
             return;
         }
 
-        // Сохраняем отзыв с детальными оценками
-        addReview({ 
-            name, 
-            text, 
-            rating, 
-            category,
-            criteria: criteriaRatings // Сохраняем оценки по критериям
-        });
+        addReview({ name, text, rating, category, criteria: criteriaRatings });
         
         modal.remove();
         showToast('Спасибо! Ваш отзыв отправлен на модерацию.', 'success');
@@ -250,7 +228,6 @@ function setupModalHandlers(modal) {
     });
 }
 
-// === ПОДСВЕТКА ЗВЁЗД ===
 function highlightStars(stars, count) {
     stars.forEach(star => {
         const value = parseInt(star.dataset.value);
@@ -259,7 +236,6 @@ function highlightStars(stars, count) {
     });
 }
 
-// === УВЕДОМЛЕНИЯ ===
 function showToast(message, type = 'info') {
     document.querySelectorAll('.review-toast').forEach(el => el.remove());
 

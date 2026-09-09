@@ -1,3 +1,7 @@
+// ==========================================
+// МОДАЛКИ ДЛЯ СТАТЕЙ И ОТЗЫВОВ
+// ==========================================
+
 import { articlesData } from '../../../public/data/articles.js';
 import { reviewsData } from '../../../public/data/reviews.js';
 
@@ -17,6 +21,7 @@ export function initModals() {
         const article = articlesData[index];
         if (!article) return;
         modalImage.src = article.image;
+        modalImage.alt = article.title;
         modalCategory.textContent = article.category;
         modalTitle.textContent = article.title;
         modalMeta.textContent = `${article.date} · ${article.readingTime}`;
@@ -30,19 +35,14 @@ export function initModals() {
         document.body.style.overflow = '';
     }
 
+    // === ОТКРЫТИЕ ПО КЛИКУ НА КАРТОЧКУ ===
     document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.btn-read-more');
-        if (btn) {
-            const id = parseInt(btn.dataset.articleId);
-            if (!isNaN(id)) openArticle(id);
-        }
-    });
-
-    document.addEventListener('click', (e) => {
-        const slide = e.target.closest('.carousel-slide');
-        if (slide && !e.target.closest('.btn-read-more')) {
-            const id = parseInt(slide.dataset.articleId);
-            if (!isNaN(id)) openArticle(id);
+        const card = e.target.closest('.article-card');
+        if (card) {
+            const index = parseInt(card.dataset.index);
+            if (!isNaN(index) && articlesData[index]) {
+                openArticle(index);
+            }
         }
     });
 
@@ -70,34 +70,32 @@ export function initModals() {
     const rDetails = document.getElementById('reviewModalDetails');
 
     const detailLabels = {
-        contact: 'Контакт с терапевтом',
-        understanding: 'Понимание проблемы',
-        effectiveness: 'Эффективность',
-        atmosphere: 'Атмосфера',
-        overall: 'Общее впечатление'
+        professionalism: 'Профессионализм',
+        empathy: 'Эмпатия и внимание',
+        clarity: 'Чёткость объяснений',
+        effectiveness: 'Эффективность работы',
+        recommendation: 'Готовность рекомендовать'
     };
 
     function openReview(id) {
         const review = reviewsData.find(r => r.id === id);
         if (!review) return;
 
-        // Имя только сверху (один раз)
-        if (rName) {
-            rName.textContent = review.name;
-        }
+        if (rName) rName.textContent = review.name;
+        if (rStars) rStars.textContent = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        if (rText) rText.textContent = review.text;
+        if (rDate) rDate.textContent = review.date;
 
-        rStars.textContent = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-        rText.textContent = review.text;
-        rDate.textContent = review.date;
-
-        // Детальная оценка
-        if (rDetails) {
-            rDetails.innerHTML = Object.keys(detailLabels).map(key => `
+        // Детальная оценка по критериям
+        if (rDetails && review.criteria) {
+            rDetails.innerHTML = Object.entries(review.criteria).map(([key, value]) => `
                 <div class="modal-detail-item">
-                    <span class="modal-detail-label">${detailLabels[key]}</span>
-                    <span class="modal-detail-stars">${'★'.repeat(review.details[key])}${'☆'.repeat(5 - review.details[key])}</span>
+                    <span class="modal-detail-label">${detailLabels[key] || key}</span>
+                    <span class="modal-detail-stars">${'★'.repeat(value)}${'☆'.repeat(5 - value)}</span>
                 </div>
             `).join('');
+        } else if (rDetails) {
+            rDetails.innerHTML = '';
         }
 
         rModal.classList.add('active');

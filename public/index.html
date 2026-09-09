@@ -4,14 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Арина Николаева · Веб-разработчик</title>
-    <meta name="description" content="Квалифицированный веб-разработчик. Помогаю люидям реализовать их идеи и помочь бзнесу." />
+    <meta name="description" content="Квалифицированный веб-разработчик. Помогаю людям реализовать их идеи и помочь бизнесу." />
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- FAVICON -->
     <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
     <link rel="shortcut icon" href="images/favicon.ico" />
 </head>
 <body>
-
     <!-- МОДАЛЬНОЕ ОКНО ДЛЯ СТАТЕЙ -->
     <div class="modal-overlay" id="articleModal">
         <div class="modal-content">
@@ -28,20 +26,6 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ОТЗЫВОВ -->
-    <div class="modal-overlay" id="reviewModal">
-        <div class="modal-content modal-review">
-            <button class="modal-close" id="reviewModalClose">✕</button>
-            <div class="modal-body">
-                <div class="modal-review-name" id="reviewModalName"></div>
-                <div class="modal-stars" id="reviewModalStars"></div>
-                <p class="modal-review-text" id="reviewModalText"></p>
-                <div class="modal-review-date" id="reviewModalDate"></div>
-                <div class="modal-details" id="reviewModalDetails"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ВХОДА АДМИНА -->
     <div class="modal-overlay auth-modal" id="authModal">
         <div class="modal-content">
@@ -49,7 +33,6 @@
             <div class="modal-body">
                 <h2 class="auth-title">Вход для администратора</h2>
                 <p class="auth-subtitle">Введите данные для доступа к панели управления</p>
-
                 <form class="auth-form" id="authForm">
                     <div class="form-group">
                         <label for="authEmail">Email</label>
@@ -62,7 +45,6 @@
                     <button type="submit" class="auth-submit-btn">Войти</button>
                     <div class="auth-error" id="authError"></div>
                 </form>
-
                 <div class="auth-demo-hint">
                     🔑 <strong>Демо-данные:</strong> admin@psychologist.ru / admin123
                 </div>
@@ -78,7 +60,6 @@
         </svg>
     </button>
 
-    <!-- ⚠️ ВАЖНО: СЮДА ДОБАВЛЯЕМ СКРИПТ -->
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

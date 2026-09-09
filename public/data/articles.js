@@ -1,8 +1,14 @@
+// ==========================================
+// СТАТЬИ
+// ==========================================
+
+import { articleCategories } from './categories.js';
+
 export const articlesData = [
     {
         id: 0,
         title: 'Как говорить о чувствах в паре',
-        category: 'Отношения',
+        category: articleCategories[0],
         date: '10.09.2026',
         readingTime: '5 мин чтения',
         image: 'images/article-1.jpg',
@@ -18,7 +24,7 @@ export const articlesData = [
     {
         id: 1,
         title: 'Кризисы в отношениях: что делать',
-        category: 'Кризисы',
+        category: articleCategories[1],
         date: '05.09.2026',
         readingTime: '7 мин чтения',
         image: 'images/article-2.jpg',
@@ -32,7 +38,7 @@ export const articlesData = [
     {
         id: 2,
         title: 'Самооценка и отношения',
-        category: 'Самооценка',
+        category: articleCategories[2],
         date: '28.08.2026',
         readingTime: '6 мин чтения',
         image: 'images/article-3.jpg',
@@ -46,7 +52,7 @@ export const articlesData = [
     {
         id: 3,
         title: 'Как перестать зависеть от чужого мнения',
-        category: 'Психология',
+        category: articleCategories[3],
         date: '20.08.2026',
         readingTime: '4 мин чтения',
         image: 'images/article-1.jpg',
