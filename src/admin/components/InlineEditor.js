@@ -253,8 +253,10 @@ function toggleSectionEdit(section, overlay) {
         const actions = document.querySelector('.edit-actions');
         if (actions) actions.remove();
         
+        // ✅ Убираем класс editing-active и возвращаем исходное состояние
         document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
             el.contentEditable = 'false';
+            el.classList.remove('editing-active'); // ← ГЛАВНОЕ: удаляем класс
             el.style.outline = 'none';
             el.style.outlineOffset = '0';
             el.style.backgroundColor = 'transparent';
@@ -284,14 +286,10 @@ function toggleSectionEdit(section, overlay) {
         // Показываем плавающие кнопки
         showEditActions(section, overlay);
         
+        // ✅ Используем ТОЛЬКО класс, без инлайн-стилей
         document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
             el.contentEditable = 'true';
-            el.style.outline = '2px solid #FF6B35';
-            el.style.outlineOffset = '4px';
-            el.style.backgroundColor = 'rgba(255, 107, 53, 0.06)';
-            el.style.borderRadius = '4px';
-            el.style.padding = '2px 4px';
-            el.style.color = '#FFFFFF';
+            el.classList.add('editing-active'); // добавляем класс
         });
     }
 }
@@ -315,7 +313,7 @@ function closeOtherSections(currentOverlay) {
                 btn.style.opacity = '0';
                 btn.style.pointerEvents = 'none';
             }
-            
+
             // Убираем редактируемость текста
             document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
                 el.contentEditable = 'false';
