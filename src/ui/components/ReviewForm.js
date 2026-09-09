@@ -2,8 +2,8 @@
 // ФОРМА ДОБАВЛЕНИЯ ОТЗЫВА (С РАЗДЕЛЬНЫМИ ОЦЕНКАМИ)
 // ==========================================
 
-import { addReview } from '../../../public/data/reviews.js';
-import { reviewCategories } from '../../../public/data/categories.js';
+import { addReview } from '../../data/reviews.js';
+import { reviewCategories } from '../../data/categories.js';
 
 // ✅ КРИТЕРИИ ДЛЯ ОЦЕНКИ (как в развёрнутых отзывах)
 const ratingCriteria = [

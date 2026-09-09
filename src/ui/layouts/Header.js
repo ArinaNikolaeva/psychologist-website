@@ -2,7 +2,7 @@
 // HEADER
 // ==========================================
 
-import { siteConfig } from '/data/siteConfig.js';
+import { siteConfig } from '../../data/siteConfig.js';
 
 export function renderHeader() {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';

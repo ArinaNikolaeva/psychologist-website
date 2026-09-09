@@ -2,7 +2,7 @@
 // HERO
 // ==========================================
 
-import { siteConfig } from '/data/siteConfig.js';
+import { siteConfig } from '../../data/siteConfig.js';
 
 export function renderHero() {
     const person = siteConfig.person;

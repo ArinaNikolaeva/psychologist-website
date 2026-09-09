@@ -2,7 +2,7 @@
 // ABOUT
 // ==========================================
 
-import { siteConfig } from '/data/siteConfig.js';
+import { siteConfig } from '../../data/siteConfig.js';
 
 export function renderAbout() {
     const person = siteConfig.person;

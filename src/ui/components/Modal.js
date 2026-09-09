@@ -2,8 +2,8 @@
 // МОДАЛКИ ДЛЯ СТАТЕЙ И ОТЗЫВОВ
 // ==========================================
 
-import { articlesData } from '../../../public/data/articles.js';
-import { reviewsData } from '../../../public/data/reviews.js';
+import { articlesData } from '../../data/articles.js';
+import { reviewsData } from '../../data/reviews.js';
 
 export function initModals() {
     // ==========================================

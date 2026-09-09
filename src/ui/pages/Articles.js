@@ -2,7 +2,7 @@
 // СТАТЬИ
 // ==========================================
 
-import { articlesData } from '/data/articles.js';
+import { articlesData } from '../../data/articles.js';
 
 // === ЦВЕТА ДЛЯ КАТЕГОРИЙ СТАТЕЙ ===
 function getCategoryColor(category) {

@@ -20,7 +20,7 @@ import { initInlineEditor } from '../admin/components/InlineEditor.js';
 import { initAdminPanel } from '../admin/components/AdminPanel.js';
 
 import { initHome } from '../ui/pages/Home.js';
-import { siteConfig } from '/data/siteConfig.js';
+import { siteConfig } from '../data/siteConfig.js';
 
 export function initApp() {
     // Рендерим хедер и футер

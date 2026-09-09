@@ -2,7 +2,7 @@
 // FAQ
 // ==========================================
 
-import { faqData } from '../../../public/data/faq.js';
+import { faqData } from '../../data/faq.js';
 
 export function renderFAQ() {
     return `

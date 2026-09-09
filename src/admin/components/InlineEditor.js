@@ -2,7 +2,7 @@
 // РЕДАКТИРОВАНИЕ — ПРОСТАЯ РАБОЧАЯ ВЕРСИЯ
 // ==========================================
 
-import { siteConfig } from '/data/siteConfig.js';
+import { siteConfig } from '../../data/siteConfig.js';
 
 // ✅ БЕРЁМ ДАННЫЕ ИЗ siteConfig
 const defaultData = {

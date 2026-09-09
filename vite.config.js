@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    root: 'public',
+    // root: 'public', ← УБИРАЕМ
     server: {
         port: 3000,
         open: true
     },
     build: {
-        outDir: '../dist',
+        outDir: 'dist',
         emptyOutDir: true
     }
 });

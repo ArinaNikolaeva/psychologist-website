@@ -2,8 +2,8 @@
 // СТРАНИЦА / КОМПОНЕНТ ОТЗЫВОВ
 // ==========================================
 
-import { reviewsData } from '../../../public/data/reviews.js';
-import { categoryMap } from '../../../public/data/categories.js';
+import { reviewsData } from '../../data/reviews.js';
+import { categoryMap } from '../../data/categories.js';
 import { renderReviewForm, initReviewForm } from '../components/ReviewForm.js';
 
 export function renderReviews() {
