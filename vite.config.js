@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    base: '/psychologist-website/',  // <- всегда, без условий
     server: {
         port: 3000,
         open: true
@@ -8,7 +9,5 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         emptyOutDir: true
-    },
-    // Только для продакшена
-    base: process.env.NODE_ENV === 'production' ? '/psychologist-website/' : '/'
+    }
 });

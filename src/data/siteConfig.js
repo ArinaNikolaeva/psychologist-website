@@ -29,10 +29,10 @@ export const siteConfig = {
         ogImage: '/images/og-image.jpg'
     },
     images: {
-        heroBg: '/images/hero-bg.jpg',        // ← добавил /
-        heroPhoto: '/images/hero-photo.jpg',  // ← добавил /
-        aboutPhoto: '/images/about-photo.jpg', // ← добавил /
-        favicon: '/images/favicon.ico'        // ← добавил /
+        heroBg: 'images/hero-bg.jpg',        // ← без /
+        heroPhoto: 'images/hero-photo.jpg',  // ← без /
+        aboutPhoto: 'images/about-photo.jpg', // ← без /
+        favicon: 'images/favicon.ico'        // ← без /
     },
     tags: [
         '✦ ИРНИТУ (политех)',
