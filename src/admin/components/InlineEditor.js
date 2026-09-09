@@ -263,7 +263,7 @@ function toggleSectionEdit(section, overlay) {
             el.style.color = '';
         });
         
-        showToast('✅ Изменения сохранены!');
+        showToast('Изменения сохранены!');
     } else {
         // ➡️ ЗАКРЫВАЕМ ВСЕ ДРУГИЕ СЕКЦИИ
         closeOtherSections(overlay);
@@ -366,7 +366,7 @@ function showEditActions(section, overlay) {
     };
     
     const indicator = document.createElement('span');
-    indicator.textContent = `✏️ Редактирование: ${sectionNames[section] || section}`;
+    indicator.textContent = `✎ Редактирование: ${sectionNames[section] || section}`;
     indicator.style.cssText = `
         color: #FF6B35;
         font-size: 0.85rem;
@@ -376,11 +376,11 @@ function showEditActions(section, overlay) {
     `;
     
     const saveBtn = document.createElement('button');
-    saveBtn.textContent = '💾 Сохранить';
+    saveBtn.textContent = 'Сохранить';
     saveBtn.style.cssText = `
         padding: 10px 28px;
         border-radius: 40px;
-        background: #2d6b4f;
+        background: #FF6B35;
         color: white;
         border: none;
         cursor: pointer;
@@ -391,11 +391,11 @@ function showEditActions(section, overlay) {
     `;
     saveBtn.addEventListener('mouseenter', () => {
         saveBtn.style.transform = 'scale(1.03)';
-        saveBtn.style.background = '#3a7d5f';
+        saveBtn.style.background = 'rgba(255, 107, 53, 0.5)';
     });
     saveBtn.addEventListener('mouseleave', () => {
         saveBtn.style.transform = 'scale(1)';
-        saveBtn.style.background = '#2d6b4f';
+        saveBtn.style.background = 'rgba(255, 107, 53, 0.9)';
     });
     saveBtn.addEventListener('click', () => {
         toggleSectionEdit(section, overlay);
@@ -496,7 +496,7 @@ function showToast(message) {
         bottom: 100px;
         left: 50%;
         transform: translateX(-50%);
-        background: #2d6b4f;
+        background: #34ff342a;
         color: white;
         padding: 14px 32px;
         border-radius: 12px;
