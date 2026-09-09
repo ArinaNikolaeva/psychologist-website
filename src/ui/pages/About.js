@@ -5,9 +5,22 @@ export function renderAbout(data) {
                 <img src="${data.image}" alt="${data.name}" />
             </div>
             <div class="about-content animate-on-scroll" style="animation-delay: 0.1s;">
-                <p class="about-experience">${data.experience}</p>
-                <p><strong>Привет! Я ${data.name}.</strong> ${data.intro}</p>
-                <p>${data.description}</p>
+                <!-- ИМЯ — отдельно -->
+                <h3 data-editable="about.name" style="display: block; width: 100%;">${data.name}</h3>
+                
+                <!-- СПЕЦИАЛИЗАЦИЯ — отдельно -->
+                <p class="about-experience" data-editable="about.experience" style="display: block; width: 100%;">${data.experience}</p>
+                
+                <!-- ПЕРВЫЙ АБЗАЦ — отдельно -->
+                <p data-editable="about.intro" style="display: block; width: 100%;">
+                    <strong>Привет! Я ${data.name}.</strong> ${data.intro}
+                </p>
+                
+                <!-- ВТОРОЙ АБЗАЦ — отдельно -->
+                <p data-editable="about.description" style="display: block; width: 100%;">
+                    ${data.description}
+                </p>
+                
                 <div class="about-meta">
                     ${data.meta.map(m => `<span>${m}</span>`).join('')}
                 </div>

@@ -10,7 +10,12 @@ import { renderFAQ } from '../ui/pages/FAQ.js';
 import { initCarousel } from '../ui/components/Carousel.js';
 import { initModals } from '../ui/components/Modal.js';
 import { initFAQ } from '../ui/components/FAQ.js';
-import { initAuthModal } from '../ui/components/AuthModal.js'; 
+
+// ИМПОРТЫ ИЗ ПАПКИ ADMIN (ОДИН РАЗ)
+import { initAuthModal, updateHeaderButtons } from '../admin/components/AuthModal.js';
+import { initInlineEditor } from '../admin/components/InlineEditor.js';
+import { initAdminPanel } from '../admin/components/AdminPanel.js';
+
 const heroData = {
     name: 'Арина Николаева',
     subtitle: 'Психолог по отношениям · Гештальт-подход',
@@ -95,10 +100,14 @@ export function initApp() {
     // ИНИЦИАЛИЗАЦИЯ МОДАЛОК
     initModals();
 
-    // ИНИЦИАЛИЗАЦИЯ FAQ ← ДОБАВИТЬ
+    // ИНИЦИАЛИЗАЦИЯ FAQ
     initFAQ();
 
+    // ИНИЦИАЛИЗАЦИЯ АДМИН-МОДУЛЕЙ (ОДИН РАЗ)
     initAuthModal();
+    updateHeaderButtons();
+    initInlineEditor();
+    initAdminPanel();
 
     // КОНТАКТЫ
     document.getElementById('contactTelegram')?.addEventListener('click', () => {
@@ -110,6 +119,7 @@ export function initApp() {
     document.getElementById('contactEmail')?.addEventListener('click', () => {
         alert('Email: arina@psychologist.ru');
     });
+
     initHeader();
     initFooter();
 

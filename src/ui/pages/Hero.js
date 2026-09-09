@@ -5,9 +5,19 @@ export function renderHero(data) {
             <div class="section-overlay"></div>
             <div class="container hero-inner">
                 <div class="hero-text">
-                    <h1 class="animate-on-scroll">${data.name}</h1>
-                    <p class="subtitle animate-on-scroll" style="animation-delay: 0.1s;">${data.subtitle}</p>
-                    <p class="description animate-on-scroll" style="animation-delay: 0.2s;">${data.description}</p>
+                    <!-- ✅ data-editable="hero.name" -->
+                    <h1 class="animate-on-scroll" data-editable="hero.name">${data.name}</h1>
+                    
+                    <!-- ✅ data-editable="hero.subtitle" -->
+                    <p class="subtitle animate-on-scroll" data-editable="hero.subtitle" style="animation-delay: 0.1s;">
+                        ${data.subtitle}
+                    </p>
+                    
+                    <!-- ✅ data-editable="hero.description" -->
+                    <p class="description animate-on-scroll" data-editable="hero.description" style="animation-delay: 0.2s;">
+                        ${data.description}
+                    </p>
+                    
                     <div class="hero-actions animate-on-scroll" style="animation-delay: 0.3s;">
                         <a href="#contacts" class="btn btn-primary">Связаться</a>
                         <a href="#about" class="btn btn-outline">Узнать больше</a>

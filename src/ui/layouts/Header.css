@@ -82,6 +82,7 @@
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .nav a {
@@ -97,6 +98,53 @@
 .nav a:hover {
     background: var(--color-accent);
     color: #121212;
+}
+
+/* ==========================================
+   КНОПКИ В НАВИГАЦИИ (ВХОД / АДМИН)
+   ========================================== */
+.nav-auth-btn {
+    padding: 6px 20px;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #121212;
+    background: var(--color-accent);
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: var(--font-primary);
+    box-shadow: 0 4px 16px rgba(212, 139, 106, 0.25);
+}
+
+.nav-auth-btn:hover {
+    background: var(--color-accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(212, 139, 106, 0.35);
+}
+
+.nav-auth-btn:active {
+    transform: translateY(0);
+}
+
+.nav-admin-btn {
+    padding: 6px 20px;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #121212;
+    background: var(--color-accent);
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: var(--font-primary);
+    box-shadow: 0 4px 16px rgba(212, 139, 106, 0.25);
+}
+
+.nav-admin-btn:hover {
+    background: var(--color-accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(212, 139, 106, 0.35);
 }
 
 /* ==========================================
@@ -119,55 +167,12 @@
         padding: 4px 12px;
         font-size: 0.75rem;
     }
-    .logo {
-        font-size: 0.95rem;
-    }
-}
-
-/* ==========================================
-   КНОПКИ В НАВИГАЦИИ (ВХОД / АДМИН)
-   ========================================== */
-.nav-auth-btn {
-    padding: 6px 18px;
-    border-radius: 40px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    background: transparent;
-    border: 2px solid var(--color-text-secondary);
-    cursor: pointer;
-    transition: 0.3s;
-    font-family: var(--font-primary);
-}
-
-.nav-auth-btn:hover {
-    background: var(--color-accent);
-    color: #121212;
-    border-color: var(--color-accent);
-}
-
-.nav-admin-btn {
-    padding: 6px 18px;
-    border-radius: 40px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #121212;
-    background: var(--color-accent);
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-    font-family: var(--font-primary);
-}
-
-.nav-admin-btn:hover {
-    background: var(--color-accent-dark);
-    transform: translateY(-2px);
-}
-
-@media (max-width: 480px) {
     .nav-auth-btn,
     .nav-admin-btn {
-        padding: 4px 12px;
+        padding: 4px 14px;
         font-size: 0.75rem;
+    }
+    .logo {
+        font-size: 0.95rem;
     }
 }

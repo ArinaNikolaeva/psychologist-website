@@ -1,4 +1,5 @@
 export function renderHeader() {
+    // Проверяем, есть ли админ в localStorage
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
     return `
@@ -19,7 +20,7 @@ export function renderHeader() {
                     <button class="nav-auth-btn" id="authOpenBtn">
                         ${isAdmin ? 'Админ' : 'Вход'}
                     </button>
-                    <!-- КНОПКА ПАНЕЛИ АДМИНА (пока скрыта) -->
+                    <!-- КНОПКА ПАНЕЛИ АДМИНА (показывается только если isAdmin === true) -->
                     <button class="nav-admin-btn" id="adminPanelBtn" style="display: ${isAdmin ? 'inline-block' : 'none'}">
                         Панель
                     </button>
@@ -34,7 +35,6 @@ export function initHeader() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Кнопка "Панель администратора" (заглушка)
     document.getElementById('adminPanelBtn')?.addEventListener('click', () => {
         alert('🛠️ Панель администратора в разработке');
     });

@@ -1,13 +1,33 @@
+/* ==========================================
+   ГЛОБАЛЬНЫЕ ИМПОРТЫ
+   ========================================== */
 @import '../../src/ui/styles/variables.css';
 @import '../../src/ui/styles/global.css';
+
+/* ==========================================
+   КОМПОНЕНТЫ
+   ========================================== */
 @import '../../src/ui/components/Button.css';
 @import '../../src/ui/components/Card.css';
 @import '../../src/ui/components/Carousel.css';
 @import '../../src/ui/components/Modal.css';
 @import '../../src/ui/components/Reviews.css';
+
+/* ==========================================
+   СТРАНИЦЫ
+   ========================================== */
 @import '../../src/ui/pages/Hero.css';
 @import '../../src/ui/pages/About.css';
 @import '../../src/ui/pages/FAQ.css';
+
+/* ==========================================
+   LAYOUT
+   ========================================== */
 @import '../../src/ui/layouts/Header.css';
 @import '../../src/ui/layouts/Footer.css';
-@import '../../src/ui/components/AuthModal.css';
+
+/* ==========================================
+   АДМИН-МОДУЛИ
+   ========================================== */
+@import '../../src/admin/components/AuthModal.css';
+@import '../../src/admin/components/InlineEditor.css';

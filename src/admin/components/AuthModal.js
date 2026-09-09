@@ -46,12 +46,11 @@ export function initAuthModal() {
         const email = document.getElementById('authEmail').value.trim();
         const password = document.getElementById('authPassword').value.trim();
 
-        // ДЕМО-ДАННЫЕ (потом заменишь на реальные)
+        // ДЕМО-ДАННЫЕ
         const validEmail = 'admin@psychologist.ru';
         const validPassword = 'admin123';
 
         if (email === validEmail && password === validPassword) {
-            // Успешный вход
             localStorage.setItem('isAdmin', 'true');
             closeModal();
             showAuthSuccess();
@@ -92,28 +91,30 @@ function showAuthSuccess() {
     }, 3000);
 }
 
-// === ОБНОВЛЕНИЕ КНОПОК В ХЕДЕРЕ ===
-function updateHeaderButtons() {
+export function updateHeaderButtons() {
     const openBtn = document.getElementById('authOpenBtn');
     const adminPanelBtn = document.getElementById('adminPanelBtn');
 
     if (localStorage.getItem('isAdmin') === 'true') {
         if (openBtn) {
-            openBtn.textContent = '👤 Админ';
+            openBtn.textContent = 'Админ';
+            // ✅ ОСТАВЛЯЕМ ОРАНЖЕВЫЙ
             openBtn.style.background = 'var(--color-accent)';
             openBtn.style.color = '#121212';
             openBtn.style.border = 'none';
+            openBtn.style.boxShadow = '0 4px 16px rgba(212, 139, 106, 0.25)';
         }
-        // Показываем кнопку "Панель администратора" (если есть)
         if (adminPanelBtn) {
             adminPanelBtn.style.display = 'inline-block';
         }
     } else {
         if (openBtn) {
             openBtn.textContent = 'Вход';
-            openBtn.style.background = 'transparent';
-            openBtn.style.color = 'var(--color-text-secondary)';
-            openBtn.style.border = '2px solid var(--color-text-secondary)';
+            // ✅ ОРАНЖЕВЫЙ
+            openBtn.style.background = 'var(--color-accent)';
+            openBtn.style.color = '#121212';
+            openBtn.style.border = 'none';
+            openBtn.style.boxShadow = '0 4px 16px rgba(212, 139, 106, 0.25)';
         }
         if (adminPanelBtn) {
             adminPanelBtn.style.display = 'none';
@@ -121,7 +122,7 @@ function updateHeaderButtons() {
     }
 }
 
-// === ДОБАВЛЯЕМ СТИЛИ ДЛЯ ТОСТА ===
+// === СТИЛИ ДЛЯ ТОСТА ===
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideUp {
@@ -130,6 +131,3 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-// Вызываем при загрузке
-document.addEventListener('DOMContentLoaded', updateHeaderButtons);
