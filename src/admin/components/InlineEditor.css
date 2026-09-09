@@ -41,6 +41,7 @@
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
 }
+
 [data-editable] {
     display: block !important;
     width: 100% !important;
@@ -73,4 +74,24 @@
 .hero-text .edit-overlay ~ * {
     position: relative;
     z-index: 1;
+}
+
+/* В CSS файл (например, src/css/editor.css) */
+
+/* Режим редактирования — добавляем отступы между элементами */
+.section-editing [data-editable] {
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Или более гибкий вариант для разных элементов */
+.section-editing .editing-active {
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Для h1 в hero оставляем как есть */
+.section-editing [data-editable="hero.name"].editing-active {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
 }

@@ -219,6 +219,7 @@ function removeEditOverlays() {
     document.querySelectorAll('.edit-overlay').forEach(overlay => overlay.remove());
     document.querySelectorAll('[data-editable]').forEach(el => {
         el.contentEditable = 'false';
+        el.classList.remove('editing-active'); // ← удаляем класс
         el.style.outline = 'none';
         el.style.outlineOffset = '0';
         el.style.backgroundColor = 'transparent';
@@ -283,13 +284,19 @@ function toggleSectionEdit(section, overlay) {
             btn.style.display = 'none';
         }
         
+        // ✅ ДОБАВЛЯЕМ КЛАСС СЕКЦИИ ДЛЯ РАЗДВИГАНИЯ
+        const parentSection = overlay.closest('.section');
+        if (parentSection) {
+            parentSection.classList.add('section-editing');
+        }
+        
         // Показываем плавающие кнопки
         showEditActions(section, overlay);
         
-        // ✅ Используем ТОЛЬКО класс, без инлайн-стилей
+        // Добавляем класс редактирования элементам
         document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
             el.contentEditable = 'true';
-            el.classList.add('editing-active'); // добавляем класс
+            el.classList.add('editing-active');
         });
     }
 }
@@ -298,7 +305,6 @@ function toggleSectionEdit(section, overlay) {
 function closeOtherSections(currentOverlay) {
     document.querySelectorAll('.edit-overlay').forEach(overlay => {
         if (overlay !== currentOverlay && overlay.dataset.editing === 'true') {
-            // Закрываем эту секцию без сохранения
             const section = overlay.dataset.section;
             overlay.dataset.editing = 'false';
             overlay.style.background = 'transparent';
@@ -306,17 +312,17 @@ function closeOtherSections(currentOverlay) {
             overlay.style.webkitBackdropFilter = 'none';
             overlay.style.pointerEvents = 'none';
             
-            // Показываем кнопку в закрываемой секции
             const btn = overlay.querySelector('.edit-overlay-btn');
             if (btn) {
                 btn.style.display = 'block';
                 btn.style.opacity = '0';
                 btn.style.pointerEvents = 'none';
             }
-
-            // Убираем редактируемость текста
+            
+            // ✅ Убираем класс
             document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
                 el.contentEditable = 'false';
+                el.classList.remove('editing-active'); // ← удаляем класс
                 el.style.outline = 'none';
                 el.style.outlineOffset = '0';
                 el.style.backgroundColor = 'transparent';
@@ -327,7 +333,6 @@ function closeOtherSections(currentOverlay) {
         }
     });
     
-    // Удаляем плавающие кнопки
     const actions = document.querySelector('.edit-actions');
     if (actions) actions.remove();
 }
@@ -442,8 +447,10 @@ function showEditActions(section, overlay) {
         actions.remove();
         applyDataToDOM(loadData());
         
+        // ✅ Убираем класс и инлайн-стили
         document.querySelectorAll(`[data-editable^="${section}"]`).forEach(el => {
             el.contentEditable = 'false';
+            el.classList.remove('editing-active'); // ← ГЛАВНОЕ: удаляем класс
             el.style.outline = 'none';
             el.style.outlineOffset = '0';
             el.style.backgroundColor = 'transparent';

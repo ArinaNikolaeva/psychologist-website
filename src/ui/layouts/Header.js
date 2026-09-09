@@ -18,7 +18,7 @@ export function renderHeader() {
                     <a href="#contacts">Контакты</a>
                     <!-- КНОПКА ВХОДА -->
                     <button class="nav-auth-btn" id="authOpenBtn">
-                        ${isAdmin ? 'Админ' : 'Вход'}
+                        ${isAdmin ? 'Выход' : 'Вход'}
                     </button>
                     <!-- КНОПКА ПАНЕЛИ АДМИНА (показывается только если isAdmin === true) -->
                     <button class="nav-admin-btn" id="adminPanelBtn" style="display: ${isAdmin ? 'inline-block' : 'none'}">
