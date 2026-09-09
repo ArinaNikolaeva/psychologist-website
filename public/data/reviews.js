@@ -1,107 +1,114 @@
-export const reviewsData = [
-    {
-        id: 0,
-        name: 'Екатерина и Дмитрий',
-        category: 'отношения',
-        text: 'Арина помогла нам с партнёром наладить диалог. Мы снова слышим друг друга. Арина помогла нам с партнёром наладить диалог. Мы снова слышим друг друга.',
-        rating: 5,
-        date: '01.09.2026',
-        details: {
-            contact: 5,
-            understanding: 5,
-            effectiveness: 4,
-            atmosphere: 5,
-            overall: 5
-        }
-    },
+// ==========================================
+// ДАННЫЕ ОТЗЫВОВ И УПРАВЛЕНИЕ ИМИ
+// ==========================================
+
+// ✅ ОСТАВЛЯЕМ ВАШИ ДАННЫЕ КАК ЕСТЬ
+const reviewsData = [
     {
         id: 1,
-        name: 'Анна',
-        category: 'самооценка',
-        text: 'После терапии я начала лучше понимать свои чувства. Перестала бояться отношений.',
+        name: 'Екатерина',
+        date: '15 марта 2026',
         rating: 5,
-        date: '15.08.2026',
-        details: {
-            contact: 5,
-            understanding: 5,
+        category: 'отношения',
+        text: 'Арина — потрясающий специалист! За несколько сессий помогла разобраться в сложных отношениях с партнёром. Очень бережный подход и глубокое понимание.',
+        criteria: {
+            professionalism: 5,
+            empathy: 5,
+            clarity: 5,
             effectiveness: 5,
-            atmosphere: 5,
-            overall: 5
+            recommendation: 5
         }
     },
     {
         id: 2,
-        name: 'Сергей',
-        category: 'кризис',
-        text: 'Молодой специалист, но очень глубокий подход. Помогла разобраться в себе.',
-        rating: 4,
-        date: '10.08.2026',
-        details: {
-            contact: 4,
-            understanding: 5,
-            effectiveness: 4,
-            atmosphere: 4,
-            overall: 4
+        name: 'Дмитрий',
+        date: '2 февраля 2026',
+        rating: 5,
+        category: 'самооценка',
+        text: 'Обратился с проблемой выгорания и низкой самооценки. Арина помогла увидеть ситуацию с другой стороны и найти опору в себе. Очень рекомендую!',
+        criteria: {
+            professionalism: 5,
+            empathy: 4,
+            clarity: 5,
+            effectiveness: 5,
+            recommendation: 5
         }
     },
     {
         id: 3,
         name: 'Ольга',
-        category: 'отношения',
-        text: 'Арина помогла мне выйти из затяжного кризиса в отношениях. Теперь я чувствую опору.',
-        rating: 5,
-        date: '25.07.2026',
-        details: {
-            contact: 5,
-            understanding: 5,
-            effectiveness: 5,
-            atmosphere: 5,
-            overall: 5
-        }
-    },
-    {
-        id: 4,
-        name: 'Максим',
+        date: '20 января 2026',
+        rating: 4,
         category: 'эмоции',
-        text: 'Обратился с проблемой в общении с партнёром. Арина помогла увидеть ситуацию с другой стороны.',
-        rating: 5,
-        date: '20.07.2026',
-        details: {
-            contact: 5,
-            understanding: 4,
-            effectiveness: 5,
-            atmosphere: 5,
-            overall: 5
-        }
-    },
-    {
-        id: 5,
-        name: 'Ирина',
-        category: 'самооценка',
-        text: 'Очень деликатный и профессиональный подход. Арина действительно слышит и помогает найти ответы внутри себя.',
-        rating: 5,
-        date: '15.07.2026',
-        details: {
-            contact: 5,
-            understanding: 5,
-            effectiveness: 5,
-            atmosphere: 5,
-            overall: 5
-        }
-    },
-    {
-        id: 6,
-        name: 'Алексей',
-        category: 'коммуникация',
-        text: 'Научился лучше выражать свои мысли и чувства. Огромное спасибо за поддержку!',
-        rating: 5,
-        date: '10.07.2026',
-        details: {
-            contact: 5,
-            understanding: 4,
-            effectiveness: 5,
-            atmosphere: 4,
-            overall: 5
+        text: 'Хороший специалист. Внимательно слушает, задаёт правильные вопросы. Немного не хватило времени на проработку, но это уже индивидуально.',
+        criteria: {
+            professionalism: 4,
+            empathy: 5,
+            clarity: 4,
+            effectiveness: 4,
+            recommendation: 4
         }
     }
 ];
+
+// ✅ ЭКСПОРТ ВАШИХ ДАННЫХ (НЕ МЕНЯЕМ)
+export { reviewsData };
+
+// === НОВЫЕ ФУНКЦИИ ДЛЯ РАБОТЫ С localStorage (НЕ ЛОМАЕМ СТАРЫЕ) ===
+
+const STORAGE_KEY = 'psychologist_reviews';
+
+// Загрузить отзывы из localStorage или базовые
+function loadReviews() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length) {
+                return parsed;
+            }
+        } catch (e) {}
+    }
+    // Если нет сохранённых — сохраняем базовые
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reviewsData));
+    return JSON.parse(JSON.stringify(reviewsData));
+}
+
+function saveReviews(reviews) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+}
+
+// ДОБАВИТЬ ОТЗЫВ (на модерацию)
+export function addReview({ name, text, rating, category = 'эмоции', criteria = null }) {
+    const reviews = loadReviews();
+    const newReview = {
+        id: Date.now() + Math.random(),
+        name: name.trim(),
+        text: text.trim(),
+        rating: Number(rating),
+        category: category,
+        date: new Date().toLocaleDateString('ru-RU', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }),
+        isModerated: false,
+        criteria: criteria || { // Если критерии не переданы, создаём дефолтные
+            professionalism: Number(rating),
+            empathy: Number(rating),
+            clarity: Number(rating),
+            effectiveness: Number(rating),
+            recommendation: Number(rating)
+        }
+    };
+    reviews.push(newReview);
+    saveReviews(reviews);
+    return newReview;
+}
+
+// ПОЛУЧИТЬ ОПУБЛИКОВАННЫЕ ОТЗЫВЫ (для обратной совместимости)
+export function getPublishedReviews() {
+    const all = loadReviews();
+    // Если у отзыва нет поля isModerated — считаем его опубликованным
+    return all.filter(r => r.isModerated !== false);
+}

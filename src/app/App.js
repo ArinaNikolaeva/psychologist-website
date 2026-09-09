@@ -16,6 +16,8 @@ import { initAuthModal, updateHeaderButtons } from '../admin/components/AuthModa
 import { initInlineEditor } from '../admin/components/InlineEditor.js';
 import { initAdminPanel } from '../admin/components/AdminPanel.js';
 
+import { initHome } from '../ui/pages/Home.js';
+
 const heroData = {
     name: 'Арина Николаева',
     subtitle: 'Веб-разработчик · Различные сайты',
@@ -109,6 +111,7 @@ export function initApp() {
     initInlineEditor();
     initAdminPanel();
 
+    initHome();
     // КОНТАКТЫ
     document.getElementById('contactTelegram')?.addEventListener('click', () => {
         alert('Telegram: @arina_psychologist');

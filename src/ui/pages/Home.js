@@ -1,5 +1,8 @@
+import { renderReviews, initReviews } from './Reviews.js';
+
 export function renderHome(data) {
     return `
+        <!-- Секция Hero -->
         <section class="section section-hero" id="home">
             <div class="section-bg" style="background-image: url('${data.bgImage}');"></div>
             <div class="section-overlay"></div>
@@ -22,5 +25,19 @@ export function renderHome(data) {
                 </div>
             </div>
         </section>
+
+        <!-- Секция Отзывов -->
+        <section class="section reviews-section" id="reviews">
+            <div class="container">
+                <h2 class="section-title">Отзывы</h2>
+                ${renderReviews()}
+            </div>
+        </section>
     `;
+}
+
+// === ИНИЦИАЛИЗАЦИЯ ПОСЛЕ РЕНДЕРИНГА ===
+export function initHome() {
+    initReviews();
+    // ... остальные инициализации
 }
