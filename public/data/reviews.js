@@ -2,7 +2,7 @@
 // ДАННЫЕ ОТЗЫВОВ И УПРАВЛЕНИЕ ИМИ
 // ==========================================
 
-import { reviewCategories } from './categories.js';
+import { articleCategories } from './categories.js';
 
 // ✅ ОСТАВЛЯЕМ ВАШИ ДАННЫЕ КАК ЕСТЬ
 const reviewsData = [
@@ -11,7 +11,7 @@ const reviewsData = [
         name: 'Екатерина',
         date: '15 марта 2026',
         rating: 5,
-        category: 'отношения',
+        category: articleCategories[4],
         text: 'Арина — потрясающий специалист! За несколько вчтречь мы смогли создать сайт моей мечты!! Благодарю!.',
         criteria: {
             professionalism: 5,
@@ -26,7 +26,7 @@ const reviewsData = [
         name: 'Дмитрий',
         date: '2 февраля 2026',
         rating: 5,
-        category: 'бизнес',
+        category: articleCategories[0],
         text: 'Хотел улучшить бизнес, но бюджет не такой большой как хотелось бы, а сайт нужен был качественный, Арина справилась с этой задачей и очень мне помогла',
         criteria: {
             professionalism: 5,
@@ -41,7 +41,7 @@ const reviewsData = [
         name: 'Ольга',
         date: '20 января 2026',
         rating: 4,
-        category: 'эмоции',
+        category: articleCategories[1],
         text: 'Хороший специалист. Внимательно слушает, задаёт правильные вопросы. Немного не хватило времени на проработку, но это уже индивидуально.',
         criteria: {
             professionalism: 4,
