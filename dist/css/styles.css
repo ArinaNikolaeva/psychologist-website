@@ -66,6 +66,8 @@
    ========================================== */
 @import '../../src/admin/components/AuthModal.css';
 @import '../../src/admin/components/InlineEditor.css';
+@import '../../src/admin/components/AdminPanel.css';  /* ← НОВЫЙ */
+
 
 /* ==========================================
    КАСТОМНЫЙ СКРОЛЛБАР (ЧЁРНО-СЕРО-ОРАНЖЕВЫЙ)
