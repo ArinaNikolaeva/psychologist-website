@@ -25,7 +25,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 380px;
+    width: 450px;
     max-width: 90vw;
     height: 100vh;
     background: var(--glass-bg, #1e1e1e);
@@ -437,5 +437,436 @@
 
     .contacts-editor {
         width: 95vw;
+    }
+}
+
+/* ==========================================
+   ПЛИТКА "ОБРАЗОВАНИЕ"
+   ========================================== */
+.admin-education-tile {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.admin-education-tile:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 107, 53, 0.2);
+}
+
+.education-preview {
+    margin-bottom: 14px;
+}
+
+.education-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.education-preview-icon {
+    font-size: 1.2rem;
+    color: var(--color-accent, #D48B6A);
+}
+
+.education-preview-count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #fff);
+}
+
+.education-preview-label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted, #808080);
+}
+
+.education-preview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.education-preview-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary, #B0B0B0);
+    overflow: hidden;
+}
+
+.education-preview-dot {
+    color: var(--color-accent, #D48B6A);
+    flex-shrink: 0;
+}
+
+.education-preview-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ==========================================
+   РЕДАКТОР ОБРАЗОВАНИЯ (РАСШИРЕННЫЙ)
+   ========================================== */
+.education-editor-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 10004;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.education-editor-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ✅ ШИРЕ: было 520px, стало 780px */
+.education-editor {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 1100px;
+    max-width: 95vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--glass-bg, #1e1e1e);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    z-index: 10005;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.education-editor.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.education-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.education-editor-header h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #fff);
+    margin: 0;
+}
+
+.education-editor-close {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted, #808080);
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.education-editor-close:hover {
+    color: var(--color-accent, #D48B6A);
+    transform: scale(1.1);
+}
+
+.education-editor-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px;
+}
+
+.education-editor-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);   /* ✅ 2 колонки */
+    gap: 16px;
+}
+
+.education-editor-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 24px 0;
+}
+
+/* === КАРТОЧКА ЗАПИСИ === */
+.education-item-editor {
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: border-color 0.3s ease;
+}
+
+.education-item-editor:hover {
+    border-color: rgba(255, 107, 53, 0.2);
+}
+
+.education-item-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #808080);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.education-remove {
+    background: transparent;
+    border: none;
+    color: #FF6B6B;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    transition: all 0.3s ease;
+}
+
+.education-remove:hover {
+    color: #FF4444;
+    transform: scale(1.2);
+}
+
+.education-item-editor-grid {
+    display: grid;
+    grid-template-columns: 60px 1fr 80px;
+    gap: 8px;
+}
+
+.education-item-editor input {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--color-bg-primary, #121212);
+    color: var(--color-text-primary, #fff);
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.education-item-editor input:focus {
+    border-color: var(--color-accent, #D48B6A);
+    outline: none;
+}
+
+.education-item-editor input::placeholder {
+    color: var(--color-text-muted, #808080);
+}
+
+/* ==========================================
+   ПРИКРЕПЛЕНИЕ ФАЙЛОВ (визуально)
+   ========================================== */
+.education-file-upload {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.education-file-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #B0B0B0);
+    margin-bottom: 10px;
+}
+
+.education-file-icon {
+    font-size: 1rem;
+}
+
+.education-file-dropzone {
+    padding: 20px 16px;
+    border: 2px dashed rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.education-file-dropzone:hover {
+    border-color: var(--color-accent, #D48B6A);
+    background: rgba(212, 139, 106, 0.04);
+}
+
+.education-file-placeholder {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary, #B0B0B0);
+    margin-bottom: 4px;
+}
+
+.education-file-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #808080);
+}
+
+.education-file-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* === АДАПТИВ === */
+@media (max-width: 800px) {
+    .education-editor-list {
+        grid-template-columns: 1fr;   /* ✅ 1 колонка на маленьких экранах */
+    }
+}
+
+@media (max-width: 480px) {
+    .education-editor {
+        width: 95vw;
+        max-height: 95vh;
+    }
+
+    .education-editor-body {
+        padding: 20px;
+    }
+
+    .education-item-editor-grid {
+        grid-template-columns: 50px 1fr 70px;
+    }
+}
+
+/* === КАРТОЧКА ЗАПИСИ === */
+.education-item-editor {
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.education-item-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #808080);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.education-remove {
+    background: transparent;
+    border: none;
+    color: #FF6B6B;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    transition: all 0.3s ease;
+}
+
+.education-remove:hover {
+    color: #FF4444;
+    transform: scale(1.2);
+}
+
+.education-item-editor-grid {
+    display: grid;
+    grid-template-columns: 60px 1fr 80px;
+    gap: 8px;
+}
+
+.education-item-editor input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--color-bg-primary, #121212);
+    color: var(--color-text-primary, #fff);
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.education-item-editor input:focus {
+    border-color: var(--color-accent, #D48B6A);
+    outline: none;
+}
+
+.education-item-editor input::placeholder {
+    color: var(--color-text-muted, #808080);
+}
+
+.education-editor-body .form-group {
+    margin-bottom: 16px;
+}
+
+.education-editor-body label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary, #B0B0B0);
+    margin-bottom: 6px;
+}
+
+.education-editor-body textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    background: var(--color-bg-primary, #121212);
+    color: var(--color-text-primary, #fff);
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    box-sizing: border-box;
+}
+
+.education-editor-body textarea:focus {
+    border-color: var(--color-accent, #D48B6A);
+    outline: none;
+}
+
+.education-editor-actions {
+    display: flex;
+    gap: 10px;
+    padding: 16px 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.education-editor-actions .admin-btn {
+    flex: 1;
+}
+
+/* === АДАПТИВ === */
+@media (max-width: 480px) {
+    .education-editor {
+        width: 95vw;
+    }
+
+    .education-item-editor-grid {
+        grid-template-columns: 50px 1fr 70px;
     }
 }

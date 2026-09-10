@@ -7,7 +7,7 @@ import { renderFooter } from '../ui/layouts/Footer.js';
 import { initHeader } from '../ui/layouts/Header.js';
 import { initFooter } from '../ui/layouts/Footer.js';
 import { renderHero } from '../ui/pages/Hero.js';
-import { renderAbout } from '../ui/pages/About.js';
+import { renderAbout, initAbout } from '../ui/pages/About.js';
 import { renderArticles } from '../ui/pages/Articles.js';
 import { renderReviews } from '../ui/pages/Reviews.js';
 import { renderFAQ } from '../ui/pages/FAQ.js';
@@ -21,6 +21,8 @@ import { initAdminPanel } from '../admin/components/AdminPanel.js';
 
 import { initHome } from '../ui/pages/Home.js';
 import { siteConfig } from '../data/siteConfig.js';
+
+
 
 export function initApp() {
     // Рендерим хедер и футер
@@ -93,6 +95,7 @@ export function initApp() {
     initInlineEditor();
     initAdminPanel();
     initHome();
+    initAbout();
     initHeader();
     initFooter();
 

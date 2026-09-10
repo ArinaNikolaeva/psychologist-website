@@ -28,30 +28,59 @@ export function initAdminPanel() {
     console.log('🛠️ AdminPanel инициализирован');
 }
 
-// === ПОЛУЧИТЬ КОНТАКТЫ (из localStorage или из siteConfig) ===
+// ==========================================
+// ХЕЛПЕРЫ ДАННЫХ
+// ==========================================
+
+// === КОНТАКТЫ ===
 function getContacts() {
     const saved = localStorage.getItem('siteContacts');
     if (saved) {
-        try {
-            return JSON.parse(saved);
-        } catch (e) {
-            console.warn('Ошибка загрузки контактов:', e);
-        }
+        try { return JSON.parse(saved); } catch (e) {}
     }
     return { ...siteConfig.contacts };
 }
 
-// === СОХРАНИТЬ КОНТАКТЫ ===
 function saveContacts(contacts) {
     localStorage.setItem('siteContacts', JSON.stringify(contacts));
 }
 
-// === ОТКРЫТЬ БОКОВУЮ ПАНЕЛЬ ===
+// === ОБРАЗОВАНИЕ ===
+function getEducation() {
+    const saved = localStorage.getItem('siteEducation');
+    if (saved) {
+        try { return JSON.parse(saved); } catch (e) {}
+    }
+    return siteConfig.person.education || [];
+}
+
+function saveEducation(education) {
+    localStorage.setItem('siteEducation', JSON.stringify(education));
+}
+
+// === СЕРТИФИКАТЫ ===
+function getCertificates() {
+    const saved = localStorage.getItem('siteCertificates');
+    if (saved) {
+        try { return JSON.parse(saved); } catch (e) {}
+    }
+    return siteConfig.person.certificates || [];
+}
+
+function saveCertificates(certificates) {
+    localStorage.setItem('siteCertificates', JSON.stringify(certificates));
+}
+
+// ==========================================
+// БОКОВАЯ ПАНЕЛЬ
+// ==========================================
+
 function openAdminSidebar() {
     if (document.querySelector('.admin-sidebar')) return;
 
     const stats = getStats();
     const contacts = getContacts();
+    const education = getEducation();
 
     const overlay = document.createElement('div');
     overlay.className = 'admin-sidebar-overlay';
@@ -79,7 +108,7 @@ function openAdminSidebar() {
                     <span class="stat-label">Отзывов</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-icon">❓</span>
+                    <span class="stat-icon">?</span>
                     <span class="stat-value">${stats.faq}</span>
                     <span class="stat-label">FAQ</span>
                 </div>
@@ -109,6 +138,29 @@ function openAdminSidebar() {
                 </div>
                 <button class="admin-btn admin-btn-primary" id="editContactsBtn">
                     ✎ Изменить контакты
+                </button>
+            </div>
+
+            <!-- === ОБРАЗОВАНИЕ === -->
+            <div class="admin-section-title">Образование</div>
+            <div class="admin-education-tile" id="adminEducationTile">
+                <div class="education-preview">
+                    <div class="education-preview-item">
+                        <span class="education-preview-icon">◈</span>
+                        <span class="education-preview-count" id="previewEducationCount">${education.length}</span>
+                        <span class="education-preview-label">записей</span>
+                    </div>
+                    <div class="education-preview-list" id="previewEducationList">
+                        ${education.slice(0, 3).map(item => `
+                            <div class="education-preview-row">
+                                <span class="education-preview-dot">${item.icon || '◈'}</span>
+                                <span class="education-preview-title">${item.title}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="admin-btn admin-btn-primary" id="editEducationBtn">
+                    ✎ Редактировать образование
                 </button>
             </div>
 
@@ -162,7 +214,12 @@ function openAdminSidebar() {
 
     // === РЕДАКТИРОВАНИЕ КОНТАКТОВ ===
     sidebar.querySelector('#editContactsBtn')?.addEventListener('click', () => {
-        openContactsEditor(sidebar, closeSidebar);
+        openContactsEditor(sidebar);
+    });
+
+    // ✅ РЕДАКТИРОВАНИЕ ОБРАЗОВАНИЯ — ЭТОГО НЕ БЫЛО!
+    sidebar.querySelector('#editEducationBtn')?.addEventListener('click', () => {
+        openEducationEditor(sidebar);
     });
 
     // === ОЧИСТКА ДАННЫХ ===
@@ -170,6 +227,8 @@ function openAdminSidebar() {
         if (confirm('⚠ Вы уверены, что хотите очистить все сохранённые данные?')) {
             localStorage.removeItem('editorData');
             localStorage.removeItem('siteContacts');
+            localStorage.removeItem('siteEducation');
+            localStorage.removeItem('siteCertificates');
             showNotification('⊘ Все данные очищены', 'success');
             const newStats = getStats();
             updateStatsDisplay(sidebar, newStats);
@@ -184,11 +243,183 @@ function openAdminSidebar() {
     });
 }
 
-// === РЕДАКТОР КОНТАКТОВ ===
-function openContactsEditor(sidebar, closeSidebar) {
+// === РЕДАКТОР ОБРАЗОВАНИЯ ===
+function openEducationEditor(sidebar) {
+    const education = getEducation();
+    const certificates = getCertificates();
+
+    const editorOverlay = document.createElement('div');
+    editorOverlay.className = 'education-editor-overlay';
+
+    const editor = document.createElement('div');
+    editor.className = 'education-editor';
+    editor.innerHTML = `
+        <div class="education-editor-header">
+            <h3>✎ Редактирование образования</h3>
+            <button class="education-editor-close" id="educationEditorClose">✕</button>
+        </div>
+
+        <div class="education-editor-body">
+            <div class="education-editor-list" id="educationList">
+                ${education.map((item, index) => renderEducationItem(item, index)).join('')}
+            </div>
+
+            <button class="admin-btn admin-btn-secondary" id="addEducationBtn" style="margin-top: 12px;">
+                + Добавить запись
+            </button>
+
+            <div class="education-editor-divider"></div>
+
+            <div class="form-group">
+                <label>Сертификаты (через запятую)</label>
+                <textarea id="certificatesInput" rows="3" placeholder="Сертификат 1, Сертификат 2">${certificates.join(', ')}</textarea>
+            </div>
+        </div>
+
+        <div class="education-editor-actions">
+            <button class="admin-btn admin-btn-primary" id="saveEducationBtn">
+                Сохранить
+            </button>
+            <button class="admin-btn admin-btn-secondary" id="cancelEducationBtn">
+                ✕ Отмена
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(editorOverlay);
+    document.body.appendChild(editor);
+
+    requestAnimationFrame(() => {
+        editorOverlay.classList.add('active');
+        editor.classList.add('active');
+    });
+
+    let currentEducation = [...education];
+
+    // === ЗАКРЫТИЕ ===
+    function closeEditor() {
+        editorOverlay.classList.remove('active');
+        editor.classList.remove('active');
+        setTimeout(() => {
+            editorOverlay.remove();
+            editor.remove();
+        }, 300);
+    }
+
+    editorOverlay.addEventListener('click', closeEditor);
+    editor.querySelector('#educationEditorClose').addEventListener('click', closeEditor);
+    editor.querySelector('#cancelEducationBtn').addEventListener('click', closeEditor);
+
+    // === ОБРАБОТЧИКИ ПОЛЕЙ ===
+    function attachEducationHandlers(container, list) {
+        container.querySelectorAll('.education-item-editor').forEach((el, index) => {
+            el.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', () => {
+                    const field = input.dataset.field;
+                    list[index][field] = input.value;
+                });
+            });
+
+            el.querySelector('.education-remove')?.addEventListener('click', () => {
+                list.splice(index, 1);
+                const listEl = container.querySelector('#educationList');
+                listEl.innerHTML = list.map((item, i) => renderEducationItem(item, i)).join('');
+                attachEducationHandlers(container, list);
+            });
+        });
+    }
+
+    attachEducationHandlers(editor, currentEducation);
+
+    // === ДОБАВИТЬ ЗАПИСЬ ===
+    editor.querySelector('#addEducationBtn').addEventListener('click', () => {
+        currentEducation.push({
+            type: 'Курсы',
+            title: 'Название',
+            specialization: 'Специализация',
+            year: '2026',
+            icon: '◈',
+            description: ''
+        });
+        const list = editor.querySelector('#educationList');
+        list.innerHTML = currentEducation.map((item, i) => renderEducationItem(item, i)).join('');
+        attachEducationHandlers(editor, currentEducation);
+    });
+
+    // === СОХРАНИТЬ ===
+    editor.querySelector('#saveEducationBtn').addEventListener('click', () => {
+        saveEducation(currentEducation);
+
+        const certs = editor.querySelector('#certificatesInput').value
+            .split(',')
+            .map(c => c.trim())
+            .filter(Boolean);
+        saveCertificates(certs);
+
+        sidebar.querySelector('#previewEducationCount').textContent = currentEducation.length;
+        sidebar.querySelector('#previewEducationList').innerHTML = currentEducation.slice(0, 3).map(item => `
+            <div class="education-preview-row">
+                <span class="education-preview-dot">${item.icon || '◈'}</span>
+                <span class="education-preview-title">${item.title}</span>
+            </div>
+        `).join('');
+
+        showNotification('✓ Образование сохранено', 'success');
+        closeEditor();
+    });
+}
+
+// === РЕНДЕР ОДНОЙ ЗАПИСИ ОБРАЗОВАНИЯ ===
+function renderEducationItem(item, index) {
+    return `
+        <div class="education-item-editor">
+            <div class="education-item-editor-header">
+                <span>Запись ${index + 1}</span>
+                <button type="button" class="education-remove" title="Удалить">✕</button>
+            </div>
+
+            <!-- Строка 1: иконка, тип, год -->
+            <div class="education-item-editor-grid">
+                <input type="text" data-field="icon" value="${item.icon || '◈'}" placeholder="◈" maxlength="2">
+                <input type="text" data-field="type" value="${item.type || ''}" placeholder="Тип (Курсы)">
+                <input type="text" data-field="year" value="${item.year || ''}" placeholder="Год">
+            </div>
+
+            <!-- Строка 2: название -->
+            <input type="text" data-field="title" value="${item.title || ''}" placeholder="Название учебного заведения" style="margin-top: 10px;">
+
+            <!-- Строка 3: специализация -->
+            <input type="text" data-field="specialization" value="${item.specialization || ''}" placeholder="Специализация" style="margin-top: 10px;">
+
+            <!-- Строка 4: описание -->
+            <input type="text" data-field="description" value="${item.description || ''}" placeholder="Описание (необязательно)" style="margin-top: 10px;">
+
+            <!-- ✅ БЛОК ДЛЯ ПРИКРЕПЛЕНИЯ ФАЙЛОВ (визуально) -->
+            <div class="education-file-upload">
+                <div class="education-file-label">
+                    <span>Прикрепить документ</span>
+                </div>
+                <div class="education-file-dropzone" data-index="${index}">
+                    <span class="education-file-placeholder">
+                        Перетащите файл сюда или нажмите для выбора
+                    </span>
+                    <span class="education-file-hint">PDF, JPG, PNG · до 5 МБ</span>
+                </div>
+                <div class="education-file-preview" id="filePreview-${index}">
+                    <!-- здесь будут прикреплённые файлы -->
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ==========================================
+// РЕДАКТОР КОНТАКТОВ
+// ==========================================
+
+function openContactsEditor(sidebar) {
     const contacts = getContacts();
 
-    // Оверлей поверх сайдбара
     const editorOverlay = document.createElement('div');
     editorOverlay.className = 'contacts-editor-overlay';
 
@@ -233,7 +464,6 @@ function openContactsEditor(sidebar, closeSidebar) {
         editor.classList.add('active');
     });
 
-    // === ЗАКРЫТИЕ ===
     function closeEditor() {
         editorOverlay.classList.remove('active');
         editor.classList.remove('active');
@@ -247,7 +477,6 @@ function openContactsEditor(sidebar, closeSidebar) {
     editor.querySelector('#contactsEditorClose').addEventListener('click', closeEditor);
     editor.querySelector('#contactsEditorCancel').addEventListener('click', closeEditor);
 
-    // === СОХРАНЕНИЕ ===
     editor.querySelector('#contactsForm').addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -259,7 +488,6 @@ function openContactsEditor(sidebar, closeSidebar) {
 
         saveContacts(newContacts);
 
-        // Обновляем превью в сайдбаре
         sidebar.querySelector('#previewTelegram').textContent = newContacts.telegram || '—';
         sidebar.querySelector('#previewVk').textContent = newContacts.vk || '—';
         sidebar.querySelector('#previewEmail').textContent = newContacts.email || '—';
@@ -269,7 +497,10 @@ function openContactsEditor(sidebar, closeSidebar) {
     });
 }
 
-// === ОБНОВЛЕНИЕ СТАТИСТИКИ ===
+// ==========================================
+// СТАТИСТИКА
+// ==========================================
+
 function updateStatsDisplay(container, stats) {
     const statValues = container.querySelectorAll('.stat-value');
     if (statValues.length >= 4) {
@@ -280,7 +511,6 @@ function updateStatsDisplay(container, stats) {
     }
 }
 
-// === ПОДСЧЁТ СТАТИСТИКИ ===
 function getStats() {
     const articles = document.querySelectorAll('.carousel-slide, .article-card').length || 0;
     const reviews = document.querySelectorAll('.review-card').length || 0;
@@ -290,7 +520,10 @@ function getStats() {
     return { articles, reviews, faq, editable };
 }
 
-// === УВЕДОМЛЕНИЯ ===
+// ==========================================
+// УВЕДОМЛЕНИЯ
+// ==========================================
+
 function showNotification(message, type = 'info') {
     document.querySelectorAll('.admin-toast').forEach(el => el.remove());
 

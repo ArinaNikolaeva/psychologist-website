@@ -5,9 +5,11 @@
 import { reviewsData } from '../../data/reviews.js';
 import { categoryMap } from '../../data/categories.js';
 import { renderReviewForm, initReviewForm } from '../components/ReviewForm.js';
+import { renderStatsCounter, initStatsCounter } from '../components/StatsCounter.js';
 
 export function renderReviews() {
     return `
+    ${renderStatsCounter()}
         <div class="carousel-wrapper reviews-carousel">
             <button class="carousel-btn carousel-btn-prev" id="reviewsPrev">‹</button>
             <div class="carousel-container">
@@ -38,6 +40,7 @@ export function renderReviews() {
 
 export function initReviews() {
     initReviewForm();
+    initStatsCounter();
     
     document.addEventListener('click', (e) => {
         const card = e.target.closest('.review-card');
