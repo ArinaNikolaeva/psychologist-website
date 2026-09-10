@@ -96,8 +96,11 @@ export function initApp() {
     initHeader();
     initFooter();
 
-    // КОНТАКТЫ
-    const contacts = siteConfig.contacts;
+    // Замените блок "КОНТАКТЫ" на этот:
+    // === КОНТАКТЫ (с учётом сохранённых) ===
+    const savedContacts = localStorage.getItem('siteContacts');
+    const contacts = savedContacts ? JSON.parse(savedContacts) : siteConfig.contacts;
+
     document.getElementById('contactTelegram')?.addEventListener('click', (e) => {
         e.preventDefault();
         alert(`Telegram: ${contacts.telegram}`);

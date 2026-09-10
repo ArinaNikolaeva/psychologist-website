@@ -1,6 +1,8 @@
 // ==========================================
-// ПАНЕЛЬ УПРАВЛЕНИЯ АДМИНИСТРАТОРА
+// ПАНЕЛЬ УПРАВЛЕНИЯ АДМИНИСТРАТОРА (САЙДБАР)
 // ==========================================
+
+import { siteConfig } from '../../data/siteConfig.js';
 
 export function initAdminPanel() {
     const panelBtn = document.getElementById('adminPanelBtn');
@@ -9,18 +11,15 @@ export function initAdminPanel() {
         return;
     }
 
-    // Обновляем обработчик
     panelBtn.addEventListener('click', () => {
         const isAdmin = localStorage.getItem('isAdmin') === 'true';
         if (!isAdmin) {
             showNotification('⛔ Доступ запрещён. Войдите как администратор.', 'error');
             return;
         }
-
-        openAdminModal();
+        openAdminSidebar();
     });
 
-    // Если админ уже залогинен — показываем кнопку
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     if (isAdmin) {
         panelBtn.style.display = 'inline-block';
@@ -29,99 +28,250 @@ export function initAdminPanel() {
     console.log('🛠️ AdminPanel инициализирован');
 }
 
-// === ОТКРЫТЬ МОДАЛЬНОЕ ОКНО ПАНЕЛИ ===
-function openAdminModal() {
+// === ПОЛУЧИТЬ КОНТАКТЫ (из localStorage или из siteConfig) ===
+function getContacts() {
+    const saved = localStorage.getItem('siteContacts');
+    if (saved) {
+        try {
+            return JSON.parse(saved);
+        } catch (e) {
+            console.warn('Ошибка загрузки контактов:', e);
+        }
+    }
+    return { ...siteConfig.contacts };
+}
+
+// === СОХРАНИТЬ КОНТАКТЫ ===
+function saveContacts(contacts) {
+    localStorage.setItem('siteContacts', JSON.stringify(contacts));
+}
+
+// === ОТКРЫТЬ БОКОВУЮ ПАНЕЛЬ ===
+function openAdminSidebar() {
+    if (document.querySelector('.admin-sidebar')) return;
+
     const stats = getStats();
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    
-    // Создаём модальное окно
-    const modal = document.createElement('div');
-    modal.className = 'admin-modal-overlay';
-    modal.innerHTML = `
-        <div class="admin-modal">
-            <div class="admin-modal-header">
-                <h2>🛠️ Панель администратора</h2>
-                <button class="admin-modal-close" id="adminModalClose">✕</button>
+    const contacts = getContacts();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'admin-sidebar-overlay';
+
+    const sidebar = document.createElement('aside');
+    sidebar.className = 'admin-sidebar';
+    sidebar.innerHTML = `
+        <div class="admin-sidebar-header">
+            <h2>⚙ Панель администратора</h2>
+            <button class="admin-sidebar-close" id="adminSidebarClose">✕</button>
+        </div>
+
+        <div class="admin-sidebar-body">
+            <!-- === СТАТИСТИКА === -->
+            <div class="admin-section-title">Статистика сайта</div>
+            <div class="admin-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">◈</span>
+                    <span class="stat-value">${stats.articles}</span>
+                    <span class="stat-label">Статей</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">❝</span>
+                    <span class="stat-value">${stats.reviews}</span>
+                    <span class="stat-label">Отзывов</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">❓</span>
+                    <span class="stat-value">${stats.faq}</span>
+                    <span class="stat-label">FAQ</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">✎</span>
+                    <span class="stat-value">${stats.editable}</span>
+                    <span class="stat-label">Блоков</span>
+                </div>
             </div>
-            
-            <div class="admin-modal-body">
-                <div class="admin-stats">
-                    <div class="stat-item">
-                        <span class="stat-icon">📄</span>
-                        <span class="stat-value">${stats.articles}</span>
-                        <span class="stat-label">Статей</span>
+
+            <!-- === СВЯЗЬ СО МНОЙ === -->
+            <div class="admin-section-title">Связь со мной</div>
+            <div class="admin-contacts-tile" id="adminContactsTile">
+                <div class="contact-preview">
+                    <div class="contact-preview-item">
+                        <span class="contact-preview-icon">✈</span>
+                        <span class="contact-preview-value" id="previewTelegram">${contacts.telegram || '—'}</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-icon">💬</span>
-                        <span class="stat-value">${stats.reviews}</span>
-                        <span class="stat-label">Отзывов</span>
+                    <div class="contact-preview-item">
+                        <span class="contact-preview-icon">◈</span>
+                        <span class="contact-preview-value" id="previewVk">${contacts.vk || '—'}</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-icon">❓</span>
-                        <span class="stat-value">${stats.faq}</span>
-                        <span class="stat-label">FAQ</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-icon">✏️</span>
-                        <span class="stat-value">${stats.editable}</span>
-                        <span class="stat-label">Редактируемых блоков</span>
+                    <div class="contact-preview-item">
+                        <span class="contact-preview-icon">✉</span>
+                        <span class="contact-preview-value" id="previewEmail">${contacts.email || '—'}</span>
                     </div>
                 </div>
-                
-                <div class="admin-info">
-                    <h3>💡 Режим редактирования</h3>
-                    <p>Нажмите <strong>✎ Редактировать</strong> на любом тексте с оранжевым контуром, чтобы изменить его.</p>
-                    <p>📝 Изменения сохраняются в <code>localStorage</code> и остаются после перезагрузки.</p>
-                </div>
-                
-                <div class="admin-actions">
-                    <button class="admin-btn admin-btn-danger" id="adminClearData">
-                        🗑️ Очистить все данные
-                    </button>
-                    <button class="admin-btn admin-btn-secondary" id="adminRefreshData">
-                        🔄 Обновить статистику
-                    </button>
-                </div>
+                <button class="admin-btn admin-btn-primary" id="editContactsBtn">
+                    ✎ Изменить контакты
+                </button>
+            </div>
+
+            <!-- === РЕЖИМ РЕДАКТИРОВАНИЯ === -->
+            <div class="admin-section-title">Режим редактирования</div>
+            <div class="admin-info">
+                <p>Нажмите <strong>✎ Редактировать</strong> на любом тексте с оранжевым контуром.</p>
+                <p>Изменения сохраняются в <code>localStorage</code>.</p>
+            </div>
+
+            <!-- === ДЕЙСТВИЯ === -->
+            <div class="admin-section-title">Действия</div>
+            <div class="admin-actions">
+                <button class="admin-btn admin-btn-danger" id="adminClearData">
+                    ⊘ Очистить данные
+                </button>
+                <button class="admin-btn admin-btn-secondary" id="adminRefreshData">
+                    ↻ Обновить статистику
+                </button>
             </div>
         </div>
     `;
-    
-    document.body.appendChild(modal);
-    
-    // Закрытие по клику на оверлей
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.remove();
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(sidebar);
+
+    requestAnimationFrame(() => {
+        overlay.classList.add('active');
+        sidebar.classList.add('active');
+    });
+
+    // === ЗАКРЫТИЕ ===
+    function closeSidebar() {
+        overlay.classList.remove('active');
+        sidebar.classList.remove('active');
+        setTimeout(() => {
+            overlay.remove();
+            sidebar.remove();
+        }, 300);
+    }
+
+    overlay.addEventListener('click', closeSidebar);
+    sidebar.querySelector('#adminSidebarClose').addEventListener('click', closeSidebar);
+
+    document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+            closeSidebar();
+            document.removeEventListener('keydown', escHandler);
         }
     });
-    
-    // Закрытие по кнопке "✕"
-    modal.querySelector('#adminModalClose').addEventListener('click', () => {
-        modal.remove();
+
+    // === РЕДАКТИРОВАНИЕ КОНТАКТОВ ===
+    sidebar.querySelector('#editContactsBtn')?.addEventListener('click', () => {
+        openContactsEditor(sidebar, closeSidebar);
     });
-    
-    // Очистка данных
-    modal.querySelector('#adminClearData')?.addEventListener('click', () => {
-        if (confirm('⚠️ Вы уверены, что хотите очистить все сохранённые данные?\nЭто действие необратимо.')) {
+
+    // === ОЧИСТКА ДАННЫХ ===
+    sidebar.querySelector('#adminClearData')?.addEventListener('click', () => {
+        if (confirm('⚠ Вы уверены, что хотите очистить все сохранённые данные?')) {
             localStorage.removeItem('editorData');
-            showNotification('🗑️ Все данные очищены', 'success');
-            // Обновляем статистику
+            localStorage.removeItem('siteContacts');
+            showNotification('⊘ Все данные очищены', 'success');
             const newStats = getStats();
-            updateStatsDisplay(modal, newStats);
+            updateStatsDisplay(sidebar, newStats);
         }
     });
-    
-    // Обновление статистики
-    modal.querySelector('#adminRefreshData')?.addEventListener('click', () => {
+
+    // === ОБНОВЛЕНИЕ СТАТИСТИКИ ===
+    sidebar.querySelector('#adminRefreshData')?.addEventListener('click', () => {
         const newStats = getStats();
-        updateStatsDisplay(modal, newStats);
-        showNotification('🔄 Статистика обновлена', 'success');
+        updateStatsDisplay(sidebar, newStats);
+        showNotification('↻ Статистика обновлена', 'success');
     });
 }
 
-// === ОБНОВЛЕНИЕ СТАТИСТИКИ В МОДАЛКЕ ===
-function updateStatsDisplay(modal, stats) {
-    const statValues = modal.querySelectorAll('.stat-value');
+// === РЕДАКТОР КОНТАКТОВ ===
+function openContactsEditor(sidebar, closeSidebar) {
+    const contacts = getContacts();
+
+    // Оверлей поверх сайдбара
+    const editorOverlay = document.createElement('div');
+    editorOverlay.className = 'contacts-editor-overlay';
+
+    const editor = document.createElement('div');
+    editor.className = 'contacts-editor';
+    editor.innerHTML = `
+        <div class="contacts-editor-header">
+            <h3>✎ Редактирование контактов</h3>
+            <button class="contacts-editor-close" id="contactsEditorClose">✕</button>
+        </div>
+
+        <form id="contactsForm" class="contacts-editor-form">
+            <div class="form-group">
+                <label for="contactTelegram">Telegram</label>
+                <input type="text" id="contactTelegram" value="${contacts.telegram || ''}" placeholder="@username">
+            </div>
+            <div class="form-group">
+                <label for="contactVk">ВКонтакте</label>
+                <input type="text" id="contactVk" value="${contacts.vk || ''}" placeholder="vk.com/username">
+            </div>
+            <div class="form-group">
+                <label for="contactEmail">Email</label>
+                <input type="email" id="contactEmail" value="${contacts.email || ''}" placeholder="email@example.com">
+            </div>
+
+            <div class="contacts-editor-actions">
+                <button type="submit" class="admin-btn admin-btn-primary">
+                    ✎ Сохранить
+                </button>
+                <button type="button" class="admin-btn admin-btn-secondary" id="contactsEditorCancel">
+                    ✕ Отмена
+                </button>
+            </div>
+        </form>
+    `;
+
+    document.body.appendChild(editorOverlay);
+    document.body.appendChild(editor);
+
+    requestAnimationFrame(() => {
+        editorOverlay.classList.add('active');
+        editor.classList.add('active');
+    });
+
+    // === ЗАКРЫТИЕ ===
+    function closeEditor() {
+        editorOverlay.classList.remove('active');
+        editor.classList.remove('active');
+        setTimeout(() => {
+            editorOverlay.remove();
+            editor.remove();
+        }, 300);
+    }
+
+    editorOverlay.addEventListener('click', closeEditor);
+    editor.querySelector('#contactsEditorClose').addEventListener('click', closeEditor);
+    editor.querySelector('#contactsEditorCancel').addEventListener('click', closeEditor);
+
+    // === СОХРАНЕНИЕ ===
+    editor.querySelector('#contactsForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const newContacts = {
+            telegram: document.getElementById('contactTelegram').value.trim(),
+            vk: document.getElementById('contactVk').value.trim(),
+            email: document.getElementById('contactEmail').value.trim()
+        };
+
+        saveContacts(newContacts);
+
+        // Обновляем превью в сайдбаре
+        sidebar.querySelector('#previewTelegram').textContent = newContacts.telegram || '—';
+        sidebar.querySelector('#previewVk').textContent = newContacts.vk || '—';
+        sidebar.querySelector('#previewEmail').textContent = newContacts.email || '—';
+
+        showNotification('✓ Контакты сохранены', 'success');
+        closeEditor();
+    });
+}
+
+// === ОБНОВЛЕНИЕ СТАТИСТИКИ ===
+function updateStatsDisplay(container, stats) {
+    const statValues = container.querySelectorAll('.stat-value');
     if (statValues.length >= 4) {
         statValues[0].textContent = stats.articles;
         statValues[1].textContent = stats.reviews;
@@ -132,7 +282,7 @@ function updateStatsDisplay(modal, stats) {
 
 // === ПОДСЧЁТ СТАТИСТИКИ ===
 function getStats() {
-    const articles = document.querySelectorAll('.carousel-slide').length || 0;
+    const articles = document.querySelectorAll('.carousel-slide, .article-card').length || 0;
     const reviews = document.querySelectorAll('.review-card').length || 0;
     const faq = document.querySelectorAll('.faq-item').length || 0;
     const editable = document.querySelectorAll('[data-editable]').length || 0;
@@ -142,18 +292,20 @@ function getStats() {
 
 // === УВЕДОМЛЕНИЯ ===
 function showNotification(message, type = 'info') {
+    document.querySelectorAll('.admin-toast').forEach(el => el.remove());
+
     const toast = document.createElement('div');
     toast.className = `admin-toast admin-toast-${type}`;
     toast.textContent = message;
     toast.style.cssText = `
         position: fixed;
-        bottom: 100px;
+        bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
         padding: 14px 32px;
         border-radius: 12px;
         font-weight: 600;
-        z-index: 10000;
+        z-index: 10001;
         animation: slideUp 0.4s ease;
         font-family: 'Segoe UI', sans-serif;
         font-size: 0.95rem;

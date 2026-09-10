@@ -21,7 +21,6 @@
     box-shadow: var(--shadow-hover);
 }
 
-/* === КАТЕГОРИЯ (как у статей) === */
 .review-category-tag {
     display: inline-block;
     padding: 4px 14px;
@@ -34,7 +33,6 @@
     background: var(--color-accent);
 }
 
-/* === ТЕЛО КАРТОЧКИ === */
 .review-card-body {
     padding: 16px 20px 20px;
 }
@@ -46,9 +44,6 @@
     margin-bottom: 6px;
 }
 
-/* ==========================================
-   ОБРЕЗАНИЕ ТЕКСТА ОТЗЫВОВ
-   ========================================== */
 .review-card-body p {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -185,7 +180,7 @@
     margin-bottom: 28px;
 }
 
-/* === ПОЛЯ ФОРМЫ === */
+/* === ОБЩИЕ СТИЛИ ПОЛЕЙ === */
 .review-form-container .form-group {
     margin-bottom: 20px;
 }
@@ -198,13 +193,11 @@
     margin-bottom: 6px;
 }
 
+/* === ОБЫЧНЫЕ ПОЛЯ (БЕЗ СТРЕЛКИ) === */
 .review-form-container input,
-.review-form-container textarea,
-/* === ПОЛЯ ФОРМЫ === */
-.review-form-container select {
+.review-form-container textarea {
     width: 100%;
     padding: 12px 16px;
-    padding-right: 40px;          /* ← добавляем отступ справа для стрелки */
     border-radius: var(--radius-sm);
     border: 2px solid var(--glass-border);
     background: var(--color-bg-primary);
@@ -213,17 +206,32 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     font-family: inherit;
     box-sizing: border-box;
-    
-    /* ✅ Убираем стандартную стрелку и добавляем свою */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    
-    /* Кастомная стрелка через background */
+}
+
+/* === ВЫПАДАЮЩИЙ СПИСОК СО СТРЕЛКОЙ === */
+.review-form-container select {
+    width: 100%;
+    padding: 12px 16px;
+    padding-right: 40px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--glass-border);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23808080' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 12px 8px;
+    cursor: pointer;
 }
 
 .review-form-container select option {
@@ -243,12 +251,10 @@
     color: var(--color-text-muted);
 }
 
-/* === ТЕКСТОВОЕ ПОЛЕ — ТОЛЬКО ВНИЗ === */
 .review-form-container textarea {
     resize: vertical;
     min-height: 120px;
     max-height: 300px;
-    width: 100%;
     box-sizing: border-box;
     word-wrap: break-word;
     white-space: pre-wrap;
@@ -279,7 +285,6 @@
     transform: scale(1.15);
 }
 
-/* === КНОПКА ОТПРАВКИ === */
 .submit-review-btn {
     width: 100%;
     padding: 14px;
@@ -301,43 +306,14 @@
     box-shadow: 0 8px 24px rgba(212, 139, 106, 0.3);
 }
 
-/* === АНИМАЦИИ === */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
 /* ==========================================
-   АДАПТИВ
+   КРИТЕРИИ ОЦЕНКИ
    ========================================== */
-@media (max-width: 768px) {
-    .review-form-container {
-        max-width: 560px;
-        padding: 32px 24px 28px;
-    }
-}
-
-@media (max-width: 600px) {
-    .review-form-container {
-        padding: 28px 20px 24px;
-        max-width: 100%;
-        border-radius: var(--radius-sm);
-        max-height: 95vh;
-    }
-
-    .review-form-container h2 {
-        font-size: 1.3rem;
-    }
-
-    .rating-stars {
-        font-size: 1.6rem;
-        gap: 6px;
-    }
-}
-/* ==========================================
-   КРИТЕРИИ ОЦЕНКИ (ЗВЁЗДЫ)
-   ========================================== */
-
 .rating-criteria {
     display: flex;
     flex-direction: column;
@@ -385,7 +361,6 @@
     transform: scale(1.1);
 }
 
-/* === СРЕДНЯЯ ОЦЕНКА === */
 .rating-average {
     display: inline-block;
     margin-top: 6px;
@@ -394,33 +369,9 @@
     font-weight: 500;
 }
 
-.rating-average span {
-    color: var(--color-accent);
-    font-weight: 700;
-}
-
-/* === АДАПТИВ === */
-@media (max-width: 600px) {
-    .rating-criterion {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-
-    .criterion-label {
-        min-width: auto;
-        font-size: 0.8rem;
-    }
-
-    .criterion-stars {
-        font-size: 1.1rem;
-    }
-}
-
 /* ==========================================
    МОДАЛКА ПОЛНОГО ОТЗЫВА
    ========================================== */
-
 .full-review-modal {
     position: fixed;
     inset: 0;
@@ -472,7 +423,6 @@
     color: var(--color-accent);
 }
 
-/* === ЗАГОЛОВОК === */
 .full-review-header {
     margin-bottom: 20px;
 }
@@ -501,7 +451,6 @@
     color: var(--color-text-muted);
 }
 
-/* === ТЕЛО === */
 .full-review-body .full-review-stars {
     color: var(--color-accent);
     font-size: 1.3rem;
@@ -517,7 +466,6 @@
     white-space: pre-wrap;
 }
 
-/* === КРИТЕРИИ === */
 .full-review-criteria {
     padding-top: 16px;
     border-top: 1px solid var(--glass-border);
@@ -548,8 +496,48 @@
     letter-spacing: 2px;
 }
 
-/* === АДАПТИВ === */
+/* ==========================================
+   АДАПТИВ
+   ========================================== */
+@media (max-width: 768px) {
+    .review-form-container {
+        max-width: 560px;
+        padding: 32px 24px 28px;
+    }
+}
+
 @media (max-width: 600px) {
+    .review-form-container {
+        padding: 28px 20px 24px;
+        max-width: 100%;
+        border-radius: var(--radius-sm);
+        max-height: 95vh;
+    }
+
+    .review-form-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .rating-stars {
+        font-size: 1.6rem;
+        gap: 6px;
+    }
+
+    .rating-criterion {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .criterion-label {
+        min-width: auto;
+        font-size: 0.8rem;
+    }
+
+    .criterion-stars {
+        font-size: 1.1rem;
+    }
+
     .full-review-container {
         padding: 24px 20px 20px;
         max-width: 100%;

@@ -88,84 +88,88 @@ function createOverlay(section, parentElement) {
     overlay.className = 'edit-overlay';
     overlay.dataset.section = section;
     overlay.dataset.editing = 'false';
-    
+
     overlay.style.cssText = `
         position: absolute;
-        inset: 0px 0 70px 0;
+        inset: -30px;
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 50;
-        border-radius: 5px;
-        transition: all 0.3s ease;
+        border-radius: 30px;
+        transition: all 0.4s ease;
         background: transparent;
         backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         pointer-events: none;
         cursor: pointer;
+        /* ✅ Плавное растворение через box-shadow */
+        box-shadow: inset 0 0 60px 40px rgba(18, 18, 18, 0);
     `;
-    
+
     const btn = document.createElement('button');
     btn.className = 'edit-overlay-btn';
     btn.textContent = '✎ Редактировать';
     btn.style.cssText = `
-        padding: 8px 20px;
-        border-radius: 20px;
-        background: rgba(255, 107, 53, 0.9);
+        padding: 10px 24px;
+        border-radius: 24px;
+        background: rgba(255, 107, 53, 0.95);
         color: #FFFFFF;
         border: 1px solid rgba(255, 255, 255, 0.2);
         cursor: pointer;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         font-weight: 600;
         font-family: 'Segoe UI', sans-serif;
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(8px);
         transition: all 0.3s ease;
         position: relative;
         z-index: 51;
         opacity: 0;
         pointer-events: none;
         transform: scale(0.9);
-        display: block;
     `;
-    
+
     btn.addEventListener('mouseenter', () => {
         if (overlay.dataset.editing !== 'true') {
             btn.style.transform = 'scale(1.05)';
             btn.style.background = '#FF5722';
-            btn.style.boxShadow = '0 0 30px rgba(255, 107, 53, 0.5)';
+            btn.style.boxShadow = '0 0 40px rgba(255, 107, 53, 0.6)';
         }
     });
-    
+
     btn.addEventListener('mouseleave', () => {
         if (overlay.dataset.editing !== 'true') {
             btn.style.transform = 'scale(1)';
-            btn.style.background = 'rgba(255, 107, 53, 0.9)';
+            btn.style.background = 'rgba(255, 107, 53, 0.95)';
             btn.style.boxShadow = 'none';
         }
     });
-    
+
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (overlay.dataset.editing === 'false') {
             toggleSectionEdit(section, overlay);
         }
     });
-    
+
     overlay.appendChild(btn);
-    
+
     const parent = parentElement || overlay.parentElement;
-    console.log('Родитель для оверлея:', parent);
-    
+
     if (parent) {
         let hoverTimeout;
-        
+
+        // === НАВЕДЕНИЕ ===
         parent.addEventListener('mouseenter', () => {
             clearTimeout(hoverTimeout);
             if (overlay.dataset.editing !== 'true') {
-                overlay.style.background = 'rgba(18, 18, 18, 0.3)';
-                overlay.style.backdropFilter = 'blur(2px)';
-                overlay.style.webkitBackdropFilter = 'blur(2px)';
+                // Плавное затемнение с размытием
+                overlay.style.background = 'rgba(18, 18, 18, 0.25)';
+                overlay.style.backdropFilter = 'blur(3px)';
+                overlay.style.webkitBackdropFilter = 'blur(3px)';
+                overlay.style.boxShadow = 'inset 0 0 80px 50px rgba(18, 18, 18, 0.3)';
                 overlay.style.pointerEvents = 'auto';
-                
+
                 if (btn.style.display !== 'none') {
                     btn.style.opacity = '1';
                     btn.style.pointerEvents = 'auto';
@@ -173,15 +177,17 @@ function createOverlay(section, parentElement) {
                 }
             }
         });
-        
+
+        // === УХОД ===
         parent.addEventListener('mouseleave', () => {
             hoverTimeout = setTimeout(() => {
                 if (overlay.dataset.editing !== 'true') {
                     overlay.style.background = 'transparent';
                     overlay.style.backdropFilter = 'none';
                     overlay.style.webkitBackdropFilter = 'none';
+                    overlay.style.boxShadow = 'inset 0 0 60px 40px rgba(18, 18, 18, 0)';
                     overlay.style.pointerEvents = 'none';
-                    
+
                     if (btn.style.display !== 'none') {
                         btn.style.opacity = '0';
                         btn.style.pointerEvents = 'none';
@@ -190,20 +196,20 @@ function createOverlay(section, parentElement) {
                 }
             }, 100);
         });
-        
+
         btn.addEventListener('mouseenter', () => {
             if (overlay.dataset.editing !== 'true') {
                 clearTimeout(hoverTimeout);
             }
         });
-        
+
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay && overlay.dataset.editing === 'false') {
                 toggleSectionEdit(section, overlay);
             }
         });
     }
-    
+
     return overlay;
 }
 

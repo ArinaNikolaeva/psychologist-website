@@ -86,8 +86,8 @@
 
 /* Или более гибкий вариант для разных элементов */
 .section-editing .editing-active {
-    margin-top: 8px !important;
-    margin-bottom: 8px !important;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
 }
 
 /* Для h1 в hero оставляем как есть */
