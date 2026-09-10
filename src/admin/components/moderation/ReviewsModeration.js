@@ -4,6 +4,7 @@
 
 import { siteConfig } from '../../../data/siteConfig.js';
 import { createModal, showNotification, getCriterionLabel } from './helpers.js';
+import { reviewsData } from '../../../data/reviews.js';
 
 export function openReviewsModeration() {
     const allReviews = getAllReviews();
@@ -131,7 +132,8 @@ function getAllReviews() {
     if (saved) {
         try { return JSON.parse(saved); } catch (e) {}
     }
-    return siteConfig.reviews || [];
+    // ✅ Берём из reviewsData
+    return reviewsData || [];
 }
 
 function approveReview(id) {
