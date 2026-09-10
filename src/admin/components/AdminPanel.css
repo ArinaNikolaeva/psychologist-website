@@ -2036,3 +2036,65 @@
         padding: 16px 20px;
     }
 }
+/* ==========================================
+   ТОЧКА НА КНОПКЕ "ПАНЕЛЬ"
+   ========================================== */
+
+.nav-admin-btn {
+    position: relative;
+}
+
+.panel-notification-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: #4ac6ffec;
+    border-radius: 50%;
+    border: 2px solid #00ffffce;
+    pointer-events: none;
+    animation: panel-pulse 1.5s ease-in-out infinite;
+}
+
+/* Пульсация */
+@keyframes panel-pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(68, 134, 255, 0.7);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 6px rgba(255, 242, 242, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(141, 132, 132, 0);
+    }
+}
+
+/* Лёгкое свечение на кнопке */
+.nav-admin-btn.has-notification {
+    box-shadow: 0 0 12px rgba(68, 171, 255, 0.4);
+}
+
+/* ==========================================
+   ТОЧКА НА ПЛИТКЕ "ОТЗЫВОВ"
+   ========================================== */
+
+.stat-item {
+    position: relative;   /* для позиционирования точки */
+}
+
+.stat-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    background: #4ac6ffec;
+    border-radius: 50%;
+    border: 2px solid #00ffffce;
+    pointer-events: none;
+    animation: panel-pulse 1.5s ease-in-out infinite;
+}

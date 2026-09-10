@@ -1,7 +1,7 @@
 // ==========================================
 // МОДЕРАЦИЯ ОТЗЫВОВ
 // ==========================================
-
+import { updatePanelNotificationDot } from '../AdminPanel.js';
 import { siteConfig } from '../../../data/siteConfig.js';
 import { createModal, showNotification, getCriterionLabel } from './helpers.js';
 import { reviewsData } from '../../../data/reviews.js';
@@ -57,25 +57,46 @@ export function openReviewsModeration() {
 
     // === КНОПКИ ===
     modal.querySelectorAll('.review-approve').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = parseFloat(btn.dataset.id);
-            approveReview(id);
-            showNotification('✓ Отзыв опубликован', 'success');
-            close();
-            setTimeout(openReviewsModeration, 350);
-        });
+    btn.addEventListener('click', () => {
+        const id = parseFloat(btn.dataset.id);
+        approveReview(id);
+        showNotification('✓ Отзыв опубликован', 'success');
+        close();
+        updatePanelNotificationDot();
+        updateReviewsTileDot();   // ← новая строка
+        setTimeout(openReviewsModeration, 350);
     });
+});
 
-    modal.querySelectorAll('.review-delete').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (!confirm('Удалить этот отзыв?')) return;
-            const id = parseFloat(btn.dataset.id);
-            deleteReviewById(id);
-            showNotification('⊘ Отзыв удалён', 'success');
-            close();
-            setTimeout(openReviewsModeration, 350);
-        });
+modal.querySelectorAll('.review-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (!confirm('Удалить этот отзыв?')) return;
+        const id = parseFloat(btn.dataset.id);
+        deleteReviewById(id);
+        showNotification('⊘ Отзыв удалён', 'success');
+        close();
+        updatePanelNotificationDot();
+        updateReviewsTileDot();   // ← новая строка
+        setTimeout(openReviewsModeration, 350);
     });
+});
+
+// === ОБНОВЛЕНИЕ ТОЧКИ НА ПЛИТКЕ "ОТЗЫВОВ" ===
+function updateReviewsTileDot() {
+    const tile = document.querySelector('#reviewsStatTile');
+    if (!tile) return;
+
+    const pendingCount = getAllReviews().filter(r => r.isModerated === false).length;
+    const existingDot = tile.querySelector('.stat-dot');
+
+    if (pendingCount > 0 && !existingDot) {
+        const dot = document.createElement('span');
+        dot.className = 'panel-notification-dot stat-dot';
+        tile.appendChild(dot);
+    } else if (pendingCount === 0 && existingDot) {
+        existingDot.remove();
+    }
+}
 }
 
 // === РЕНДЕР СПИСКА ===

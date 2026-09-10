@@ -11,6 +11,8 @@ import { openFaqModeration } from './moderation/FaqModeration.js';
 import { openEducationEditor } from './moderation/EducationEditor.js';
 import { openContactsEditor } from './moderation/ContactsEditor.js';
 
+import { reviewsData } from '../../data/reviews.js';
+
 export function initAdminPanel() {
     const panelBtn = document.getElementById('adminPanelBtn');
     if (!panelBtn) {
@@ -30,9 +32,44 @@ export function initAdminPanel() {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     if (isAdmin) {
         panelBtn.style.display = 'inline-block';
+        // ✅ Проверяем, есть ли новые отзывы
+        updatePanelNotificationDot();
     }
 
     console.log('🛠️ AdminPanel инициализирован');
+}
+
+// === ПУЛЬСИРУЮЩАЯ ТОЧКА НА КНОПКЕ "ПАНЕЛЬ" ===
+function updatePanelNotificationDot() {
+    const panelBtn = document.getElementById('adminPanelBtn');
+    if (!panelBtn) return;
+
+    // Считаем отзывы, которые ещё не промодерированы
+    const pending = getPendingReviewsCount();
+
+    // Удаляем старую точку, если есть
+    panelBtn.querySelector('.panel-notification-dot')?.remove();
+
+    if (pending > 0) {
+        panelBtn.classList.add('has-notification');
+        const dot = document.createElement('span');
+        dot.className = 'panel-notification-dot';
+        panelBtn.appendChild(dot);
+    } else {
+        panelBtn.classList.remove('has-notification');
+    }
+}
+
+// === СЧИТАЕМ ОТЗЫВЫ НА МОДЕРАЦИИ ===
+function getPendingReviewsCount() {
+    const saved = localStorage.getItem('psychologist_reviews');
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            return parsed.filter(r => r.isModerated === false).length;
+        } catch (e) {}
+    }
+    return 0;
 }
 
 // === ХЕЛПЕРЫ ===
@@ -91,6 +128,7 @@ function openAdminSidebar() {
                     <span class="stat-icon">❝</span>
                     <span class="stat-value">${stats.reviews}</span>
                     <span class="stat-label">Отзывов</span>
+                    ${getPendingReviewsCount() > 0 ? '<span class="panel-notification-dot stat-dot"></span>' : ''}
                 </div>
                 <div class="stat-item stat-item-clickable" id="faqStatTile" title="Управление FAQ">
                     <span class="stat-icon">?</span>
@@ -184,3 +222,5 @@ function openAdminSidebar() {
         }
     });
 }
+// Экспорт для обновления точки из других мест
+export { updatePanelNotificationDot };
